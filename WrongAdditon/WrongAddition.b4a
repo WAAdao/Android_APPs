@@ -1,0 +1,1519 @@
+﻿Build1=Default,wrong.addition
+File1=1200px-logo_unilever.svg.png
+File10=SelectCUC.bal
+File11=usuarios.bal
+File12=webservice.bal
+File2=cadastroProduto.bal
+File3=Conexao.bal
+File4=data7.db
+File5=Login.bal
+File6=logo-aplipack2.png
+File7=Main.bal
+File8=Menu.bal
+File9=Pesgaem.bal
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=core
+Library2=javaobject
+Library3=sql
+Library4=network
+Library5=abzxing
+Library6=okhttp
+Library7=okhttputils2
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="26"/>~\n~<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>~\n~<uses-permission android:name="android.permission.INTERNET" />~\n~<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />~\n~<uses-library android:name="org.apache.http.legacy" android:required="false"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"~\n~	android:installLocation="preferExternal"~\n~	android:usesCleartextTraffic="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~'End of default text.~\n~
+Module1=Starter
+NumberOfFiles=12
+NumberOfLibraries=7
+NumberOfModules=1
+Version=9.801
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: WrongAddition
+	#VersionCode: 1
+	#VersionName: Beta
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: Landscape
+	#CanInstallToExternalStorage: True
+#End Region
+
+#Region  Activity Attributes
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	Dim socket1 As Socket
+	Dim Job1 As HttpJob
+	Dim sql1 As SQL
+	Dim cursor As Cursor
+End Sub
+
+Sub Globals
+	Private ButtonSair As Button
+	Private ButtonLogin As Button
+	Private LabelClock As Label
+	Private ImageAplipack As ImageView
+	Private ButtonMenu As Button
+	Dim panelMain As Panel
+	Dim panelLogin As Panel
+	Dim panelMenu As Panel
+	Dim panelConexao As Panel
+	Dim panelPesagem As Panel
+	Dim panelUsuarios As Panel
+	Dim panelWebservice As Panel
+	Dim panelProdutos As Panel
+	Dim SelecionaCUC As Panel
+	Private ButtonTelaLogin As Button
+	Private ButtonlLimpar As Button
+	Private EditTextUser As EditText
+	Private EditTextPassword As EditText
+	Private ButtonTelaMenu As Button
+	Dim str As InputStream
+	Dim str2 As Double
+	Dim str3 As Int
+	Dim reader As TextReader
+	Private ButtonTelaMain As Button
+	Private ButtonTelaLeitura As Button
+	Private EditTextIP As EditText
+	Private EditTextPorta As EditText
+	Private ButtonManualSoftware As Button
+	Private ButtonConcluirPesagem As Button
+	Private EditTextPeso As EditText
+	Private ButtonSairPeso As Button
+	Private ButtonCadastraBalnca As Button
+	Dim myABBarcode As ABZxing
+	Private ButtonLeituraBarcode As Button
+	Private EditTextProduto As EditText
+	Private EditTextFabricacao As EditText
+	Private EditTextValidadePdoruo As EditText
+	Private EditTextLote As EditText
+	Dim i As Int
+	Dim j As Int
+	Dim count As Int
+	Dim filename As String
+	Dim listPosition As String
+	Private EditTextNomeBalanca As EditText
+	Private ButtonGravarDB As Button
+	Private ListViewBalanca As ListView
+	Private ListViewTelaBalanca As ListView
+	Private ButtonVoltarMenuUsuarios As Button
+	Private ButtonUsuarios As Button
+	Private ButtonWebservice As Button
+	Private ButtonTelawebserviceMenu As Button
+	Private ButtonProdutosVolta As Button
+	Private ButtonCadastroProduto As Button
+	Private ListViewTipoPesagem As ListView
+	Private EditTextWebserviceIP As EditText
+	Private EditTextWebservicePorta As EditText
+	Private ButtonWebserviceAlterar As Button
+	Private EditTextXML As EditText
+	Private ButtonBalancaUp As Button
+	Private ButtonBalancaDown As Button
+	Private ButtonBalanaAlterar As Button
+	Private ButtonDeletarBalanca As Button
+	Private Usertext As EditText
+	Private ListViewUsuarios As ListView
+	Private ListViewAcesso As ListView
+	Private EditTextNomeUsuario As EditText
+	Private ButtonGravarUusario As Button
+	Private ButtonAlterarUsuario As Button
+	Private ButtonUserUp As Button
+	Private ButtonUserDown As Button
+	Dim PositionUser As Int = 0
+	Dim PositionDB As Int = 1
+	Dim positionDB2 As Int = 1
+	Private ButtonNivelUp As Button
+	Private ButtonNivelDown As Button
+	Dim PositionNivel As Int = 0
+	Dim idusuario As Int = 0
+	Private ButtonApagarUsuario As Button
+	Private EditTextNomeProduto As EditText
+	Private EditTextCodigoProduto As EditText
+	Private EditTextCodigoCuc As EditText
+	Private ButtonGravarProduto As Button
+	Private ButtonProdutoAlterar As Button
+	Private ListViewProdutosCUC As ListView
+	Private EditTextPordutoCUC As EditText
+	Private ButtonMenuCUC As Button
+	Private ButtonCarregarCUC As Button
+	Private EditTextDescricaoCUC As EditText
+	Private ListViewCUC As ListView
+	Private EditTextCodigoCUCTela As EditText
+	Private ButtonApgarProdutoCUC As Button
+	Private NivelUsuario As String=0
+	Private ListViewCUCMain As ListView
+	Private ListViewCUCPesagem As ListView
+	Private Peso As Double
+	Private UnidadePeso As String
+	Dim ToleranciaMinimo As Double
+	Dim ToleranciaMaximo As Double
+	Dim URLglobal As String
+	Dim PosBalanca As Int = 0
+	Private ButtonTelaLoginVolta As Button
+	Dim ListOrdemProdSAP As List
+	Dim ListProdutosPesagem As List
+	Private ListViewCampanha As ListView
+	Dim Campanha As String
+	Dim Cod As String
+	Dim PesoRota1 As Double
+	Dim PesoAlvo As Double
+	Dim UnidadeAlvo As String
+	Dim IdPesagemProg As String
+	Private ButtonEmbalagem As Button
+	Dim EmbFechada As Double
+	Dim XMLCurrent As String
+	Dim XMLwork As String
+	Dim divisor As Int = 0
+	Dim decimal As Int = 0
+	Private EditTextDivisor As EditText
+	Private EditTextDecimais As EditText
+End Sub   
+
+Sub Activity_Create(FirstTime As Boolean)
+	panelMain.Initialize("") : panelMain.Visible = True
+	panelMain.LoadLayout("Main")
+	Activity.AddView(panelMain, 0, 0, 100%x, 100%y)
+	panelLogin.Initialize("") : panelLogin.Visible = False
+	panelLogin.LoadLayout("Login")
+	Activity.AddView(panelLogin, 0, 0, 100%x, 100%y)
+	panelMenu.Initialize("") : panelMenu.Visible = False
+	panelMenu.LoadLayout("Menu")
+	Activity.AddView(panelMenu, 0, 0, 100%x, 100%y)
+	panelConexao.Initialize("") : panelConexao.Visible = False
+	panelConexao.LoadLayout("Conexao")
+	Activity.AddView(panelConexao, 0, 0, 100%x, 100%y)
+	panelPesagem.Initialize("") : panelPesagem.Visible = False
+	panelPesagem.LoadLayout("pesgaem")
+	Activity.AddView(panelPesagem, 0, 0, 100%x, 100%y)
+	panelUsuarios.Initialize("") : panelUsuarios.Visible = False
+	panelUsuarios.LoadLayout("usuarios")
+	Activity.AddView(panelUsuarios, 0, 0, 100%x, 100%y)
+	panelWebservice.Initialize("") : panelWebservice.Visible = False
+	panelWebservice.LoadLayout("webservice")
+	Activity.AddView(panelWebservice, 0, 0, 100%x, 100%y)
+	panelProdutos.Initialize("") : panelProdutos.Visible = False
+	panelProdutos.LoadLayout("cadastroproduto")
+	Activity.AddView(panelProdutos, 0, 0, 100%x, 100%y)
+	SelecionaCUC.Initialize("") : SelecionaCUC.Visible = False
+	SelecionaCUC.LoadLayout("selectCUC")
+	Activity.AddView(SelecionaCUC, 0, 0, 100%x, 100%y)
+	Clock(True)
+	filename  = "data7.db"
+	If File.Exists(File.DirInternal,filename) = False Then
+		File.Copy(File.DirAssets,filename,File.DirInternal,filename)
+	End If	
+	If sql1.IsInitialized = False Then
+		sql1.Initialize(File.DirInternal, filename, False)
+	End If
+	Sleep(10)
+	cursor = sql1.ExecQuery("SELECT * FROM webservice")
+	cursor.Position =  0
+	URLglobal =  "http://"& cursor.GetString2(1) &":"& cursor.GetString2(2)
+	Job1.Initialize("JOBSOAP", Me)
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone	
+ 		If Job1.Success = True Then
+			XMLwork = Job1.GetString
+			Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+			XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+			XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+			If count=1 Then
+				ListViewBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+				ListViewTelaBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" "&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+			Else
+				For i=1 To count
+					ListViewBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+					ListViewTelaBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+					XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+					XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+				Next
+			End If
+		End If
+	Catch
+		count = count
+	End Try
+	Sleep(2)	
+	ListViewTipoPesagem.AddSingleLine("g")
+	ListViewTipoPesagem.AddSingleLine("kg")
+	Try
+		DateTime.DateFormat = "dd-MM-yyyy"
+		Dim t As Long
+		t = DateTime.DateParse(DateTime.Date(DateTime.now-31622400000))
+		DateTime.DateFormat = "yyyy-MM-dd HH:mm:ss"
+		Dim s As String
+		s = DateTime.Date(t)
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idOrdemProdSAP, DataHora, OrdemProd, StatusOP, Usuario , TipoOP, CodigoCUC, QuantMax, PesoMax, Prioridade, NumeroWeek, row_number() OVER (order by DataHora) as row_num FROM (SELECT idOrdemProdSAP, DataHora, OrdemProd, StatusOP, Usuario , TipoOP, CodigoCUC, QuantMax, PesoMax, Prioridade, NumeroWeek FROM (SELECT * FROM unilever_pi.ordemprodsap WHERE DataHora > '"& s &"' ORDER BY DataHora) t) t;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		If Job1.Success = True Then
+			XMLwork = Job1.GetString
+			If XMLwork.Contains("<SQL>") = True Then
+				Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+				XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+				XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+				ListOrdemProdSAP.Initialize
+				For i=1 To count
+					If i > count Then		
+					Else If i = count  Then
+						ListOrdemProdSAP.Add(XMLCurrent.SubString2(XMLCurrent.IndexOf("<OrdemProd>")+11,XMLCurrent.IndexOf("</OrdemProd>")))
+					Else
+						ListOrdemProdSAP.Add(XMLCurrent.SubString2(XMLCurrent.IndexOf("<OrdemProd>")+11,XMLCurrent.IndexOf("</OrdemProd>")))
+						XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+						XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+					End If
+				Next
+			End If
+		End If
+		ListOrdemProdSAP.Add("Fim")
+	Catch
+		MsgboxAsync("Erro ao carregar os CUCs","Aviso")
+	End Try
+	Try
+			Dim count As Int = ListOrdemProdSAP.Size
+			Dim OrdemProd As String
+			For i=1 To count-1
+				If i >= count Then					
+				Else
+					OrdemProd = ListOrdemProdSAP.Get(i)
+					Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemProg, DataHora, CodigoCUC, DescricaoCUC, Batch, Quant, OrdemProd, StatusPesagemProg, Rota, IdOrdemProdSap, Prioridade FROM unilever_pi.pesagemprog WHERE OrdemProd="& OrdemProd &" LIMIT 1;"
+					Job1.PostString(url,"")
+					Job1.GetRequest.SetContentType("application/XML")
+					Wait For (Job1) JobDone
+					If Job1.Success = True Then
+						XMLwork = Job1.GetString
+						If XMLwork="<DocumentElement />" Or XMLwork="0" Then
+						Else
+							ListViewCUCMain.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<CodigoCUC>")+11,XMLwork.IndexOf("</CodigoCUC>"))& " | " &XMLwork.SubString2(XMLwork.IndexOf("<OrdemProd>")+11,XMLwork.IndexOf("</OrdemProd>"))& " | " &XMLwork.SubString2(XMLwork.IndexOf("<DescricaoCUC>")+14,XMLwork.IndexOf("</DescricaoCUC>"))& " | " &XMLwork.SubString2(XMLwork.IndexOf("<Batch>")+7,XMLwork.IndexOf("</Batch>"))& " | " &XMLwork.SubString2(XMLwork.IndexOf("<Quant>")+7,XMLwork.IndexOf("</Quant>")),XMLwork.SubString2(XMLwork.IndexOf("<idPesagemProg>")+15,XMLwork.IndexOf("</idPesagemProg>")))
+						End If
+					End If
+				End If
+			Next
+	Catch
+		MsgboxAsync("Erro ao carregar os CUCs","AvisoS")
+	End Try
+	ListProdutosPesagem.Initialize
+	ButtonCadastraBalnca.Enabled = False
+	ButtonUsuarios.Enabled =  False
+	ButtonCadastroProduto.Enabled =  False
+	ButtonWebservice.Enabled =  False                   
+End Sub
+
+Sub Activity_Resume
+	'Msgbox("Voltou","Estado")
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	Do While UserClosed = True
+		Sleep(1000)
+	Loop
+End Sub
+
+' Relogio
+
+Private Sub Clock(value As Boolean)
+	Do While value =  True
+		Sleep(500)
+		LabelClock.Text = DateTime.Time(DateTime.Now)
+	Loop
+End Sub
+
+'Leitura Balança
+
+Sub DisableStrictMode
+	Dim jo As JavaObject
+	jo.InitializeStatic("android.os.Build.VERSION")
+	If jo.GetField("SDK_INT") > 9 Then
+		Dim policy As JavaObject
+		policy = policy.InitializeNewInstance("android.os.StrictMode.ThreadPolicy.Builder", Null)
+		policy = policy.RunMethodJO("permitAll", Null).RunMethodJO("build", Null)
+		Dim sm As JavaObject
+		sm.InitializeStatic("android.os.StrictMode").RunMethod("setThreadPolicy", Array(policy))
+	End If
+End Sub
+
+Sub Connect
+	socket1.Initialize("CoonectTelnet")
+	CallSubDelayed(Me,"CoonectTelnet")
+End Sub
+
+Sub CoonectTelnet
+	Try
+		Sleep(1)
+		If socket1.IsInitialized = True And j=0 Then
+			socket1.Connect(EditTextIP.Text,EditTextPorta.Text,2500)
+			CallSubDelayed2(Me,"CoonectTelnet_Connected",True)
+			j=1
+		End If
+	Catch
+		MsgboxAsync("No connection","Network")
+	End Try
+End Sub
+
+    Sub CoonectTelnet_Connected(state As Boolean)
+	  Do While socket1.Connected= True
+		str = socket1.InputStream
+		reader.Initialize(socket1.InputStream)
+		UnidadePeso = "KG"
+		If str.BytesAvailable-str3 >= 9 Then
+			Try			
+				str2 =  reader.ReadLine
+				str2 = str2 / divisor
+				If UnidadePeso =  "KG" Then							
+					If str2 <= ToleranciaMinimo Or str2 >= ToleranciaMaximo Then
+						If  str2 >= (ToleranciaMinimo * 0.975) And str2 <= (ToleranciaMaximo * 1.025) Then
+							EditTextPeso.TextColor = Colors.Yellow
+						Else	
+							EditTextPeso.TextColor = Colors.Red
+						End If
+					Else
+						EditTextPeso.TextColor = Colors.Green
+					End If
+					EditTextPeso.Text = NumberFormat(str2,decimal,1).Replace(".","")
+					str3 = str.BytesAvailable
+				Else If UnidadePeso =  "G" Then
+					If  str2 < ToleranciaMinimo Or str2 > ToleranciaMaximo Then
+						If  str2 >= (ToleranciaMinimo * 0.975) And str2 <= (ToleranciaMaximo  * 1.025) Then
+							EditTextPeso.TextColor = Colors.Red
+						Else
+							EditTextPeso.TextColor = Colors.Yellow
+						End If
+					Else
+						EditTextPeso.TextColor = Colors.Green
+					End If
+					EditTextPeso.Text = NumberFormat(str2,decimal,1).Replace(".","")
+					str3 = str.BytesAvailable
+				End If
+			Catch
+				EditTextPeso.Text =  "Erro ao ler, verifique a balança."
+			End Try
+		End If
+		Sleep(500)
+	Loop
+End Sub
+
+' Sai do Aplicativo
+
+Sub ButtonSair_Click
+	Dim Answ As Int
+	Dim msgYes As String = "Sim"
+	Dim msgNo As String = "Não"
+	Answ= Msgbox2("","Tem certeza que deseja sair?",msgYes,"",msgNo,Null)
+	If Answ=DialogResponse.POSITIVE Then
+		Activity.Finish
+	End If
+End Sub
+
+' Visibilidade telas
+
+' Login
+
+Sub ButtonTelaLoginVolta_Click
+	panelLogin.Visible =  False
+	panelMain.Visible = True
+End Sub
+
+Sub ButtonLogin_Click
+	panelLogin.Visible = True
+	panelMain.Visible =  False
+End Sub
+
+' Login
+
+Sub ButtonTelaLogin_Click
+	Try
+		If EditTextUser.Text = "myDB" Then
+			ButtonWebservice.Enabled =  True
+			panelMain.Visible =  True
+			panelLogin.Visible = False
+		Else
+			Dim url As String =  URLglobal & "/Login"&EditTextUser.Text&"-"&EditTextPassword.Text
+			Job1.PostString(url,"")
+			Job1.GetRequest.SetContentType("application/json")
+			Wait For (Job1) JobDone
+			Dim ret As String  = Job1.GetString
+			Job1.Release
+			If ret.SubString2(ret.IndexOf("<Resultado>")+11, ret.IndexOf("</Resultado>"))="1" Then
+			panelMain.Visible =  True
+			panelLogin.Visible = False
+			Usertext.Text =  EditTextUser.Text
+			NivelUsuario  = ret.SubString2(ret.IndexOf("<nivel>")+7, ret.IndexOf("</nivel>"))
+			EditTextUser.Text = ""
+			EditTextPassword.Text =  ""
+			If NivelUsuario =  4 Then
+				ButtonCadastraBalnca.Enabled =  True
+				ButtonUsuarios.Enabled =  True
+				ButtonMenu.Enabled = True
+				ButtonCadastroProduto.Enabled = True
+				ButtonWebservice.Enabled =  True
+			End If
+			Else
+				MsgboxAsync("Usuário ou senha invalido.","Aviso")
+			End If
+			Job1.Release
+		End If
+	Catch
+		MsgboxAsync("Erro ao conectar, verifique sua conexão.","Aviso")
+	End Try
+End Sub
+
+Sub ButtonlLimpar_Click
+	EditTextUser.Text =  ""
+	EditTextPassword.Text = ""
+End Sub
+
+Sub ButtonTelaMenu_Click
+	panelMain.Visible =  True
+	panelMenu.Visible =  False
+End Sub
+
+Sub ButtonMenu_Click
+	panelMenu.Visible =  True
+	panelMain.Visible =  False
+End Sub
+
+Sub ButtonTelaMain_Click
+	panelMenu.Visible =  True
+	panelConexao.Visible =  False
+End Sub
+
+Sub ButtonTelaLeitura_Click
+	DisableStrictMode
+	CallSubDelayed(Me,"Connect")
+End Sub
+
+Sub ButtonSairPeso_Click
+	panelPesagem.Visible =  False
+	panelMain.Visible =  True
+End Sub
+
+Sub ButtonReset_Click
+	MsgboxAsync("Reset","")
+End Sub
+
+Sub ButtonVoltarMenuUsuarios_Click
+	panelUsuarios.Visible =  False
+	panelMenu.Visible =  True
+End Sub
+
+' Métodos e botões Usuarios
+
+Sub ButtonUsuarios_Click
+	Try
+		Job1.Download(URLglobal & "/ListaUsuarios")
+		Wait For (Job1) JobDone
+		Dim retu As String = Job1.GetString
+		Dim ret As String = retu.SubString2(retu.IndexOf("<return>")+8,retu.lastIndexOf("</return>"))
+		If ret = "1" Then
+			Dim cnt As Int = retu.SubString2(retu.LastIndexOf("<count>")+7,retu.lastIndexOf("</count>"))
+			Dim usermain As String = retu.SubString2(retu.IndexOf("<usuario>"),retu.lastIndexOf("</usuario>"))
+			For i=1 To cnt
+				If i=1 Then
+					EditTextNomeUsuario.Text = usermain.SubString2(usermain.IndexOf("<nomeusuario>")+13,usermain.IndexOf("</nomeusuario>"))
+					PositionNivel = usermain.SubString2(usermain.IndexOf("<nivel>")+7,usermain.IndexOf("</nivel>"))
+					idusuario =  usermain.SubString2(usermain.IndexOf("<idusuario>")+11,usermain.IndexOf("</idusuario>"))
+					ListViewAcesso.Clear
+					For c=0 To 4
+						ListViewAcesso.AddSingleLine2(c,c)
+					Next
+					ListViewAcesso.SetSelection(PositionNivel)
+				End If
+				If i < cnt Then
+					ListViewUsuarios.AddSingleLine2(usermain.SubString2(usermain.IndexOf("<nomeusuario>")+13,usermain.IndexOf("</nomeusuario>")),usermain.SubString2(usermain.IndexOf("<idusuario>")+11,usermain.IndexOf("</idusuario>")))
+					usermain =  usermain.SubString(usermain.IndexOf("</usuario>")+10)
+				Else If i = cnt Then
+					ListViewUsuarios.AddSingleLine2(usermain.SubString2(usermain.IndexOf("<nomeusuario>")+13,usermain.IndexOf("</nomeusuario>")),usermain.SubString2(usermain.IndexOf("<idusuario>")+11,usermain.IndexOf("</idusuario>")))
+				End If
+			Next
+			panelUsuarios.Visible =  True
+			panelMenu.Visible =  False
+		Else
+			MsgboxAsync("Erro ao carregar os usuários","Erro")
+		End If
+	Catch
+		MsgboxAsync("Erro ao conectar com o bando de dados.","Erro")
+	End Try
+End Sub
+
+Sub ButtonUserUp_Click
+	Try
+		If PositionUser=0 Then
+			ListViewUsuarios.SetSelection(PositionUser)
+			PositionDB = 1
+		Else if PositionUser >= ListViewUsuarios.Size-1 Or PositionUser <= ListViewUsuarios.Size-1 Then
+			PositionDB =  PositionUser
+			PositionUser =  PositionUser-1
+			ListViewUsuarios.SetSelection(PositionUser)
+		End If
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idusuario, usuario, nivel, pesagem, processo, relatorio, row_number() OVER (order by idusuario) as row_num from unilever_pi.usuarios) t WHERE row_num="&PositionDB
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		Dim ret As String  = Job1.GetString
+		Dim XML As String = ret.SubString2(ret.IndexOf("<SQL>")+5, ret.IndexOf("</SQL>"))
+		EditTextNomeUsuario.Text = XML.SubString2(XML.IndexOf("<usuario>")+9,XML.IndexOf("</usuario>"))
+		PositionNivel = XML.SubString2(XML.IndexOf("<nivel>")+7,XML.IndexOf("</nivel>"))
+		idusuario =  XML.SubString2(XML.IndexOf("<idusuario>")+11,XML.IndexOf("</idusuario>"))
+		ListViewAcesso.Clear
+		For i=0 To 4
+			ListViewAcesso.AddSingleLine2(i,i)
+		Next
+		ListViewAcesso.SetSelection(PositionNivel)
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonUserDown_Click
+	Try
+		If PositionUser <= ListViewUsuarios.Size-1 Then
+			PositionUser =  PositionUser+1
+			PositionDB =  PositionUser+1
+			ListViewUsuarios.SetSelection(PositionUser)
+		End If
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idusuario, usuario, nivel, pesagem, processo, relatorio, row_number() OVER (order by idusuario) as row_num from unilever_pi.usuarios) t WHERE row_num="&PositionDB
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork  = Job1.GetString
+		If XMLwork="<DocumentElement />" Or XMLwork="0" Then
+		Else
+			Dim XML As String = XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5, XMLwork.IndexOf("</SQL>"))
+			EditTextNomeUsuario.Text = XML.SubString2(XML.IndexOf("<usuario>")+9,XML.IndexOf("</usuario>"))
+			PositionNivel = XML.SubString2(XML.IndexOf("<nivel>")+7,XML.IndexOf("</nivel>"))
+			idusuario =  XML.SubString2(XML.IndexOf("<idusuario>")+11,XML.IndexOf("</idusuario>"))
+			ListViewAcesso.Clear
+			For i=0 To 4
+				ListViewAcesso.AddSingleLine2(i,i)
+			Next
+			ListViewAcesso.SetSelection(PositionNivel)
+		End If
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonNivelUp_Click
+	Try
+		If PositionNivel >= ListViewAcesso.Size-1 Or PositionNivel <= ListViewAcesso.Size-1 Then
+			PositionNivel =  PositionNivel-1
+			If PositionNivel=0 Then
+				PositionNivel = 1
+				ListViewAcesso.SetSelection(PositionNivel)
+			End If
+			ListViewAcesso.SetSelection(PositionNivel)
+		Else if PositionNivel=1 Then
+			ListViewAcesso.SetSelection(PositionNivel)
+		End If
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonNivelDown_Click
+	Try
+		If PositionNivel <= ListViewAcesso.Size-1 Then
+			PositionNivel =  PositionNivel+1
+			ListViewAcesso.SetSelection(PositionNivel)
+		Else if PositionNivel=1 Then
+			ListViewAcesso.SetSelection(PositionNivel)
+		End If
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonGravarUusario_Click
+	Dim url As String =  URLglobal & "/ExecQueryINSERT INTO unilever_pi.usuarios (usuario, nivel, pesagem, processo, relatorio) VALUES ('"& EditTextNomeUsuario.Text &"',"& PositionNivel &",1,1,1);"
+	Job1.PostString(url,"")
+	Job1.GetRequest.SetContentType("application/XML")
+	Wait For (Job1) JobDone
+	Dim ret As String  = Job1.GetString
+	If ret = "0" Then
+		MsgboxAsync("Falha ao gravar","Erro")
+	End If
+	Job1.Download(URLglobal & "/ListaUsuarios")
+	Wait For (Job1) JobDone
+	Dim retu As String = Job1.GetString
+	Dim ret As String = retu.SubString2(retu.IndexOf("<return>")+8,retu.lastIndexOf("</return>"))
+	Dim usercurrent As String = ""
+	Dim count As Int = ListViewUsuarios.Size
+	ListViewUsuarios.Clear
+	If ret = "1"  Then
+		Dim cnt As Int = retu.SubString2(retu.IndexOf("<count>")+7,retu.lastIndexOf("</count>"))
+		Dim usermain As String = retu.SubString2(retu.IndexOf("<usuario>"),retu.lastIndexOf("</usuario>"))
+		Try
+			For i=0 To cnt-1
+				usercurrent = usermain.SubString(usermain.IndexOf("<usuario>"))
+				usercurrent =  usercurrent.SubString2(0,usermain.IndexOf("</usuario>")+10)
+				ListViewUsuarios.AddSingleLine2(usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>")),usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>")))
+				If i = PositionUser Then
+					EditTextNomeUsuario.Text = usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>"))
+					PositionNivel = usercurrent.SubString2(usercurrent.IndexOf("<nivel>")+7,usercurrent.IndexOf("</nivel>"))
+					idusuario =  usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>"))
+					ListViewAcesso.Clear
+					For i=0 To 4
+						ListViewAcesso.AddSingleLine2(i,i)
+					Next
+					ListViewAcesso.SetSelection(PositionNivel)
+				End If
+				usermain =  usermain.SubString(usermain.IndexOf("</usuario>")+10)
+			Next
+		Catch
+			MsgboxAsync("Erro ao Alterar","Erro")
+		End Try
+	End If
+End Sub
+
+Sub ButtonAlterarUsuario_Click
+	Dim url As String =  URLglobal & "/ExecQueryUPDATE unilever_pi.usuarios SET usuario='"& EditTextNomeUsuario.Text &"', nivel="& PositionNivel &", pesagem=1, processo=1, relatorio=1 WHERE idusuario=" & idusuario
+	Job1.PostString(url,"")
+	Job1.GetRequest.SetContentType("application/XML")
+	Wait For (Job1) JobDone
+	Dim ret As String  = Job1.GetString
+	If ret = "0"  Or ret="2" Then
+		MsgboxAsync("Falha ao Alterar","Erro")
+	End If
+	Job1.Download(URLglobal & "/ListaUsuarios")
+	Wait For (Job1) JobDone
+	Dim retu As String = Job1.GetString
+	Dim ret As String = retu.SubString2(retu.IndexOf("<return>")+8,retu.lastIndexOf("</return>"))
+	Dim usercurrent As String = ""
+	Dim count As Int = ListViewUsuarios.Size
+	ListViewUsuarios.Clear
+	If ret = "1"  Then
+		Dim usermain As String = retu.SubString2(retu.IndexOf("<usuario>"),retu.lastIndexOf("</usuario>"))
+		Try
+			For i=0 To count-1
+				usercurrent = usermain.SubString(usermain.IndexOf("<usuario>"))
+				usercurrent =  usercurrent.SubString2(0,usermain.IndexOf("</usuario>")+10)
+				ListViewUsuarios.AddSingleLine2(usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>")),usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>")))
+				If i = PositionUser Then
+					EditTextNomeUsuario.Text = usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>"))
+					PositionNivel = usercurrent.SubString2(usercurrent.IndexOf("<nivel>")+7,usercurrent.IndexOf("</nivel>"))
+					idusuario =  usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>"))
+					ListViewAcesso.Clear
+					For i=0 To 4
+						ListViewAcesso.AddSingleLine2(i,i)
+					Next
+					ListViewAcesso.SetSelection(PositionNivel)
+				End If
+				usermain =  usermain.SubString(usermain.IndexOf("</usuario>")+10)
+			Next
+		Catch
+			MsgboxAsync("Erro ao Alterar","Erro")
+		End Try
+	End If
+End Sub
+
+Sub ButtonApagarUsuario_Click
+	Dim url As String =  URLglobal & "/ExecQueryDELETE * FROM unilever_pi.usuarios WHERE idusuario="& idusuario &";"
+	Job1.PostString(url,"")
+	Job1.GetRequest.SetContentType("application/XML")
+	Wait For (Job1) JobDone
+	Dim ret As String  = Job1.GetString
+	If ret = "0" Then
+		MsgboxAsync("Falha ao gravar","Erro")
+	End If
+	Job1.Download(URLglobal & "/ListaUsuarios")
+	Wait For (Job1) JobDone
+	Dim retu As String = Job1.GetString
+	Dim ret As String = retu.SubString2(retu.IndexOf("<return>")+8,retu.lastIndexOf("</return>"))
+	Dim usercurrent As String = ""
+	Dim count As Int = ListViewUsuarios.Size
+	ListViewUsuarios.Clear
+	If ret = "1"  Then
+		Dim cnt As Int = retu.SubString2(retu.IndexOf("<count>")+7,retu.lastIndexOf("</count>"))
+		Dim usermain As String = retu.SubString2(retu.IndexOf("<usuario>"),retu.lastIndexOf("</usuario>"))
+		Try
+			For i=0 To cnt-1
+				usercurrent = usermain.SubString(usermain.IndexOf("<usuario>"))
+				usercurrent =  usercurrent.SubString2(0,usermain.IndexOf("</usuario>")+10)
+				ListViewUsuarios.AddSingleLine2(usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>")),usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>")))
+				If i = PositionUser Then
+					EditTextNomeUsuario.Text = usercurrent.SubString2(usercurrent.IndexOf("<nomeusuario>")+13,usercurrent.IndexOf("</nomeusuario>"))
+					PositionNivel = usercurrent.SubString2(usercurrent.IndexOf("<nivel>")+7,usercurrent.IndexOf("</nivel>"))
+					idusuario =  usercurrent.SubString2(usercurrent.IndexOf("<idusuario>")+11,usercurrent.IndexOf("</idusuario>"))
+					ListViewAcesso.Clear
+					For i=0 To 4
+						ListViewAcesso.AddSingleLine2(i,i)
+					Next
+					ListViewAcesso.SetSelection(PositionNivel)
+				End If
+				usermain =  usermain.SubString(usermain.IndexOf("</usuario>")+10)
+			Next
+		Catch
+			MsgboxAsync("Erro ao Alterar","Erro")
+		End Try
+	End If
+End Sub
+
+' Webservice
+
+Sub ButtonWebservice_Click
+	Try
+		cursor = sql1.ExecQuery("SELECT * FROM Webservice")
+		cursor.Position=0
+		EditTextWebserviceIP.Text = cursor.GetString2(1)
+		EditTextWebservicePorta.Text = cursor.GetString2(2)
+		panelWebservice.Visible =  True
+		panelMenu.Visible =  False
+	Catch
+		MsgboxAsync("Eoo ao alterar ao carregar o webservice.","Aviso")
+	End Try
+End Sub
+
+' Balanca
+
+Sub ButtonBalancaUp_Click
+	Try
+		Try
+			If PosBalanca=0 Then
+				ListViewTelaBalanca.SetSelection(PosBalanca)
+				positionDB2 = 1
+			Else if PosBalanca >= ListViewTelaBalanca.Size-1 Or PosBalanca <= ListViewTelaBalanca.Size-1 Then
+				positionDB2=  PosBalanca
+				PosBalanca =  PosBalanca-1
+				ListViewTelaBalanca.SetSelection(PosBalanca)
+			End If
+		Catch
+			ListViewTelaBalanca.SetSelection(PosBalanca)
+			positionDB2 = 1
+		End Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num="&positionDB2&";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		EditTextNomeBalanca.Text = XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))
+		EditTextIP.Text = XMLwork.SubString2(XMLwork.IndexOf("<ipbalanca>")+11,XMLwork.IndexOf("</ipbalanca>"))
+		EditTextPorta.Text = XMLwork.SubString2(XMLwork.IndexOf("<portabalanca>")+14,XMLwork.IndexOf("</portabalanca>"))
+		EditTextDivisor.Text = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		EditTextDecimais.Text = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+		If  XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>")) = "g" Then
+				ListViewTipoPesagem.Clear
+				ListViewTipoPesagem.AddSingleLine("g")
+				ListViewTipoPesagem.AddSingleLine("kg")
+				ListViewTipoPesagem.SetSelection(0)
+		Else
+				ListViewTipoPesagem.Clear
+				ListViewTipoPesagem.AddSingleLine("kg")
+				ListViewTipoPesagem.AddSingleLine("g")
+				ListViewTipoPesagem.SetSelection(0)
+		End If
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonBalancaDown_Click
+	Try
+		If PosBalanca=0 Then
+			PosBalanca = 1
+			positionDB2 =  2
+			ListViewTelaBalanca.SetSelection(1)
+		Else If PosBalanca <= ListViewTelaBalanca.Size-1 Then
+			PosBalanca =  PosBalanca+1
+			positionDB2=  PosBalanca+1
+			ListViewTelaBalanca.SetSelection(PosBalanca)
+		End If
+		If PosBalanca > ListViewTelaBalanca.Size Then
+			positionDB2 = ListViewTelaBalanca.Size
+			PosBalanca = ListViewTelaBalanca.Size-1
+		End If
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num="&positionDB2&";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork="<DocumentElement />" Or XMLwork="0" Then
+		Else
+			EditTextNomeBalanca.Text = XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))
+			EditTextIP.Text = XMLwork.SubString2(XMLwork.IndexOf("<ipbalanca>")+11,XMLwork.IndexOf("</ipbalanca>"))
+			EditTextPorta.Text = XMLwork.SubString2(XMLwork.IndexOf("<portabalanca>")+14,XMLwork.IndexOf("</portabalanca>"))
+			EditTextDivisor.Text = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+			EditTextDecimais.Text = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+			If  XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>")) = "g" Then
+				ListViewTipoPesagem.Clear
+				ListViewTipoPesagem.AddSingleLine("g")
+				ListViewTipoPesagem.AddSingleLine("kg")
+				ListViewTipoPesagem.SetSelection(0)
+			Else
+				ListViewTipoPesagem.Clear
+				ListViewTipoPesagem.AddSingleLine("kg")
+				ListViewTipoPesagem.AddSingleLine("g")
+				ListViewTipoPesagem.SetSelection(0)
+			End If
+		End If
+	Catch
+		MsgboxAsync("Erro ao mudar a posição.","Erro")
+	End Try
+End Sub
+
+Sub ButtonTelawebserviceMenu_Click
+	panelWebservice.Visible =  False
+	panelMenu.Visible =  True
+End Sub
+
+' Cdastro Produto
+
+Sub ButtonCadastroProduto_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idproduto_cuc, codigoCUC, descricaoCUC, row_number() OVER (order by idproduto_cuc) as row_num FROM (SELECT idproduto_cuc, codigoCUC, descricaoCUC FROM unilever_pi.produto_cuc) t group by (CodigoCUC);"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+		For i=1 To count-1
+			ListViewCUC.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaoCUC>")+14,XMLCurrent.IndexOf("</descricaoCUC>")),XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>")))
+			XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+			XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+		Next
+		SelecionaCUC.Visible =  True
+		panelMenu.Visible =  False
+	Catch
+		SelecionaCUC.Visible =  True
+		panelMenu.Visible =  False
+	End Try
+End Sub
+
+Sub ButtonGravarProduto_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQueryINSERT INTO unilever_pi.produtosCUC (codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, quant, unidade, obrigatorio, embfechada, faseprod, unidadeemb, batch, rota, numeromix, alergenico) VALUES("& EditTextCodigoCuc.Text &",'"& EditTextNomeProduto.Text &"',"& EditTextCodigoProduto.Text &",'"& EditTextNomeProduto.Text &"',10,'KG',0,20,'Sacaria','334.31',4,0,0);"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork = "0" Or XMLwork = "2" Then
+			MsgboxAsync("Erro ai gravar.","Erro")
+		End If
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idproduto_CUC, codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, quant, unidade, obrigatorio, embfechada, faseprod, unidadeemb, batch, rota, numeromix, alergenico, row_number=83113;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+		ListViewProdutosCUC.Clear
+		For i=0 To count-1
+			ListViewProdutosCUC.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaomaterial>")+19,XMLCurrent.IndexOf("</descricaomaterial>")),XMLwork.SubString2(XMLwork.IndexOf("<codigomaterial>")+16,XMLwork.IndexOf("</codigomaterial>")))
+			EditTextPordutoCUC.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaoCUC>")+14,XMLCurrent.IndexOf("</descricaoCUC>"))
+			EditTextCodigoCuc.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))
+			XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+			XMLCurrent =  XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>")+6)
+	Next
+	Catch
+		MsgboxAsync("Erro ai gravar.","Erro")
+	End Try
+End Sub
+
+Sub ButtonProdutoAlterar_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQueryUPDATE unilever_pi.produtosCUC SET (codigoCUC=83113, descricaoCUC='"& EditTextNomeProduto.Text &"', codigomaterial="& EditTextCodigoProduto.Text &", descricaomaterial='"& EditTextNomeProduto.Text &"', quant=10, unidade='KG', obrigatorio=0, embfechada=20, faseprod=1, unidadeemb='Sacaria', batch='334.31', rota=4, numeromix=0, alergenico=0);"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork = "0" Or XMLwork = "2" Then
+			MsgboxAsync("Erro ai gravar.","Erro")
+		End If
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idproduto_CUC, codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, quant, unidade, obrigatorio, embfechada, faseprod, unidadeemb, batch, rota, numeromix, alergenico, row_number=83113;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+		ListViewProdutosCUC.Clear
+		For i=0 To count-1
+			ListViewProdutosCUC.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaomaterial>")+19,XMLCurrent.IndexOf("</descricaomaterial>")),XMLwork.SubString2(XMLwork.IndexOf("<codigomaterial>")+16,XMLwork.IndexOf("</codigomaterial>")))
+			EditTextPordutoCUC.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaoCUC>")+14,XMLCurrent.IndexOf("</descricaoCUC>"))
+			EditTextCodigoCuc.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))
+			XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+			XMLCurrent =  XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>")+6)
+		Next
+	Catch
+		MsgboxAsync("Erro ai gravar.","Erro")
+	End Try
+End Sub
+
+Sub ListViewProdutosCUC_ItemClick (Position As Int, Value As Object)
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idproduto_CUC, codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, row_number() OVER (order by idproduto_cuc) as row_num from unilever_pi.produto_cuc) t WHERE codigomaterial="& Value &" AND codigoCUC="& EditTextCodigoCuc.Text &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		EditTextPordutoCUC.Text =  EditTextDescricaoCUC.Text
+		EditTextNomeProduto.Text  = XMLwork.SubString2(XMLwork.IndexOf("<descricaomaterial>")+19,XMLwork.IndexOf("</descricaomaterial>"))
+		EditTextCodigoProduto.Text = Value
+		EditTextCodigoCUCTela.Text =  EditTextCodigoCuc.Text
+	Catch
+		MsgboxAsync("Erro ao ler.","Erro")
+	End Try
+End Sub
+
+Sub ButtonMenuCUC_Click
+	panelMenu.Visible = True
+	SelecionaCUC.Visible = False
+End Sub
+
+Sub ButtonProdutosVolta_Click
+	panelProdutos.Visible =  False
+	SelecionaCUC.Visible =  True
+End Sub
+
+Sub ButtonCarregarCUC_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idproduto_CUC, codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, quant, unidade, obrigatorio, embfechada, faseprod, unidadeemb, batch, rota, numeromix, alergenico, row_number() OVER (order by idproduto_cuc) as row_num FROM (SELECT idproduto_CUC, codigoCUC, descricaoCUC, codigomaterial, descricaomaterial, quant, unidade, obrigatorio, embfechada, faseprod, unidadeemb, batch, rota, numeromix, alergenico from unilever_pi.produto_cuc) t WHERE codigocuc="& EditTextCodigoCuc.Text &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+		ListViewProdutosCUC.Clear
+		For i=1 To count-1
+			ListViewProdutosCUC.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaomaterial>")+19,XMLCurrent.IndexOf("</descricaomaterial>")),XMLwork.SubString2(XMLwork.IndexOf("<codigomaterial>")+16,XMLwork.IndexOf("</codigomaterial>")))
+			EditTextPordutoCUC.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<descricaoCUC>")+14,XMLCurrent.IndexOf("</descricaoCUC>"))
+			EditTextCodigoCuc.Text = XMLCurrent.SubString2(XMLCurrent.IndexOf("<codigoCUC>")+11,XMLCurrent.IndexOf("</codigoCUC>"))
+			XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+			XMLCurrent =  XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>")+6)
+		Next
+		panelProdutos.Visible =  True
+		SelecionaCUC.Visible =  False
+	Catch
+		panelProdutos.Visible =  True
+		SelecionaCUC.Visible =  False
+	End Try
+End Sub
+
+Sub ListViewCUC_ItemClick (Position As Int, Value As Object)
+	Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT codigoCUC, descricaoCUC, row_number() OVER (order by idproduto_cuc) as row_num from unilever_pi.produto_cuc group by (codigoCUC)) t WHERE codigoCUC="& Value &";"
+	Job1.PostString(url,"")
+	Job1.GetRequest.SetContentType("application/XML")
+	Wait For (Job1) JobDone
+	XMLwork = Job1.GetString
+	EditTextDescricaoCUC.Text  = XMLwork.SubString2(XMLwork.IndexOf("<descricaoCUC>")+14,XMLwork.IndexOf("</descricaoCUC>"))
+	EditTextCodigoCuc.Text =  XMLwork.SubString2(XMLwork.IndexOf("<codigoCUC>")+11,XMLwork.IndexOf("</codigoCUC>"))
+End Sub
+
+Sub ListViewCUCMain_ItemClick (Position As Int, Value As Object)
+	If NivelUsuario=0 Then
+		MsgboxAsync("É necessario logar prmeiro","Aviso")
+	Else
+		Try
+			IdPesagemProg =  Value
+			Dim url As String =  URLglobal & "/ExecQuerySELECT idCampanha, idPesagemProg, DataHora, Usuario, IdProcesso, Impresso, row_number() OVER (order by idCampanha) as row_num FROM unilever_pi.campanha WHERE idPesagemProg="& IdPesagemProg &";"
+			Job1.GetRequest.SetContentType("application/XML")
+			Job1.PostString(url,"")
+			Wait For (Job1) JobDone
+			XMLwork = Job1.GetString
+			If XMLwork.Contains("<SQL>") = True Then
+				Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+				XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+				XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+				ListViewCUCPesagem.Clear
+				For i=1 To count-1
+					If i=1 Then
+						Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")) &";"
+						Job1.PostString(url,"")
+						Job1.GetRequest.SetContentType("application/XML")
+						Wait For (Job1) JobDone
+						Dim XMLwork3 As String = Job1.GetString
+						Dim count2 As Int = XMLwork3.SubString2(XMLwork3.LastIndexOf("<row_num>")+9, XMLwork3.LastIndexOf("</row_num>"))
+						Dim XMLCurrent2 As String = XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+						Campanha =  XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>"))
+						ListViewCUCPesagem.Clear
+						ListProdutosPesagem.Clear
+						For x=1 To count2-1
+							ListProdutosPesagem.Add(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+							ListViewCUCPesagem.AddSingleLine2(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<DescricaoMaterial>")+19,XMLCurrent2.IndexOf("</DescricaoMaterial>")).Trim&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Peso>")+6,XMLCurrent2.IndexOf("</Peso>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<EmbFechada>")+12,XMLCurrent2.IndexOf("</EmbFechada>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" ("&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<UnidadeEmb>")+12,XMLCurrent2.IndexOf("</UnidadeEmb>"))&") | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota1>")+11,XMLCurrent2.IndexOf("</PesoRota1>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota2>")+11,XMLCurrent2.IndexOf("</PesoRota2>")),XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+							XMLwork3 = XMLwork3.SubString(XMLwork3.IndexOf("</SQL>")+6)
+							XMLCurrent2 =  XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+						Next
+					End If
+				ListViewCampanha.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")),XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")))
+				XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+				XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			Next
+		End If
+			panelPesagem.Visible =  True
+			panelMain.Visible =  False
+		Catch
+			MsgboxAsync("Erro ao carregar os produtos.","Erro")
+		End Try
+	End If
+End Sub
+
+Sub ButtonApgarProdutoCUC_Click
+	Dim url As String =  URLglobal & "/ExecQueryDELETE FROM unilever_pi.produto_cuc WHERE codigomaterial="& EditTextCodigoProduto.Text &"AND codigoCUC="& EditTextCodigoCUCTela.Text &";"
+	Job1.PostString(url,"")
+	Job1.GetRequest.SetContentType("application/XML")
+	Wait For (Job1) JobDone
+	XMLwork = Job1.GetString
+	If XMLwork = "1" Then
+		MsgboxAsync("Apagado com sucesso.","Sucesso")
+	Else
+		MsgboxAsync("Erro ao apagar.","Erro")
+	End If
+End Sub
+
+' Le o codigo de barras
+
+Sub ButtonLeituraBarcode_Click
+	myABBarcode.ABGetBarcode("myabbarcode", "")
+End Sub
+
+Sub myABBarcode_BarcodeFound (barCode As String, formatName As String)
+	If barCode.Length=32 Then
+		barCode =  barCode.SubString2(16,32)
+		EditTextValidadePdoruo.Text = barCode.SubString2(2,8)
+		EditTextValidadePdoruo.Text = EditTextValidadePdoruo.Text.SubString2(4,6)&"/"&EditTextValidadePdoruo.Text.SubString2(2,4)&"/"&EditTextValidadePdoruo.Text.SubString2(0,2)
+		EditTextFabricacao.Text = barCode.SubString(10)
+		EditTextFabricacao.Text = EditTextFabricacao.Text.SubString2(4,6)&"/"&EditTextFabricacao.Text.SubString2(2,4)&"/"&EditTextFabricacao.Text.SubString2(0,2)
+	Else
+		If barCode.StartsWith("90") = True Then
+			Cod = barCode.SubString2(2,10)
+			Dim lote As String =  barCode.SubString(20)
+			EditTextLote.Text =  lote
+			EditTextProduto.Text = Cod
+			Dim cod2 As Double = Cod
+			Cod = cod2
+			Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM unilever_pi.produto_cuc WHERE CodigoCUC="& Campanha &" AND CodigoMaterial="& "1874" &";"
+			Job1.PostString(url,"")
+			Job1.GetRequest.SetContentType("application/XML")
+			Wait For (Job1) JobDone
+			XMLwork = Job1.GetString
+			Job1.Release
+			If XMLwork.Contains("<SQL>") = True Then
+				EditTextProduto.Text = XMLwork.SubString2(XMLwork.IndexOf("<DescricaoMaterial>")+19, XMLwork.IndexOf("</DescricaoMaterial>"))
+				Peso = XMLwork.SubString2(XMLwork.IndexOf("<Quant>")+7, XMLwork.IndexOf("</Quant>"))
+				UnidadePeso = XMLwork.SubString2(XMLwork.IndexOf("<Unidade>")+9, XMLwork.IndexOf("</Unidade>"))
+			Else
+				EditTextProduto.Text = Cod
+			End If
+			Dim url As String =  URLglobal & "/ExecQuerySELECT (pesoMinimo-Tolerancia) As PesoMinimo, (pesoMaximo+Tolerancia) As PesoMaximo FROM unilever_pi.tolerancia WHERE "& Peso &" >= PesoMinimo AND "& Peso &" <= PesoMinimo AND UM='"& UnidadePeso &"';"
+			Job1.PostString(url,"")
+			Job1.GetRequest.SetContentType("application/XML")
+			Wait For (Job1) JobDone
+			XMLwork = Job1.GetString
+			Job1.Release
+			If XMLwork.Contains("<SQL>") = True Then
+				ToleranciaMinimo =  XMLwork.SubString2(XMLwork.IndexOf("<PesoMinimo>")+12,XMLwork.IndexOf("</PesoMinimo>")).Replace(".","")
+				ToleranciaMaximo = XMLwork.SubString2(XMLwork.IndexOf("<PesoMaximo>")+12,XMLwork.IndexOf("</PesoMaximo>")).Replace(".","")
+			End If
+		Else
+			MsgboxAsync(barCode,"Enviado ao Webservice")
+		End If
+	End If
+End Sub
+
+' Grava os dados de conexão no banco de dados
+
+Sub ButtonCadastraBalnca_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num=1;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		EditTextNomeBalanca.Text = XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))
+		EditTextIP.Text = XMLwork.SubString2(XMLwork.IndexOf("<ipbalanca>")+11,XMLwork.IndexOf("</ipbalanca>"))
+		EditTextPorta.Text = XMLwork.SubString2(XMLwork.IndexOf("<portabalanca>")+14,XMLwork.IndexOf("</portabalanca>"))
+		decimal = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+		divisor = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		EditTextDivisor.Text = divisor
+		EditTextDecimais.Text = decimal
+		If  XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>")) = "g" Then
+			ListViewTipoPesagem.Clear
+			ListViewTipoPesagem.AddSingleLine("g")
+			ListViewTipoPesagem.AddSingleLine("kg")
+			ListViewTipoPesagem.SetSelection(0)
+		Else
+			ListViewTipoPesagem.Clear
+			ListViewTipoPesagem.AddSingleLine("kg")
+			ListViewTipoPesagem.AddSingleLine("g")
+			ListViewTipoPesagem.SetSelection(0)
+		End If
+	Catch
+		count = count
+	End Try
+	panelMenu.Visible =  False
+	panelConexao.Visible = True
+End Sub
+
+Sub ButtonGravarDB_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num="&positionDB2&";"
+		Job1.PostString(url,"")	
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim url As String =  URLglobal & "/ExecQueryINSERT INTO unilever_pi.balancas (balanca, tipopeso, tipocom, ipbalanca, portabalanca, divisor, decimais) VALUES ('"& EditTextNomeBalanca.Text &"','"& listPosition &"','rede','"& EditTextIP.Text &"',"& EditTextPorta.Text &","& EditTextDivisor.Text &", "& EditTextDecimais.Text &")"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		ListViewTelaBalanca.Clear
+		ListViewBalanca.Clear
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+		If count=1 Then
+			ListViewBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+			ListViewTelaBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" "&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+			Else
+			For i=1 To count
+		ListViewBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+			ListViewTelaBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+			XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+			XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			Next
+		End If
+	Catch
+		count =  count
+	End Try
+End Sub
+
+Sub ButtonWebserviceAlterar_Click
+	Try
+		sql1.ExecNonQuery("UPDATE 'Webservice' SET port='"&EditTextWebserviceIP.Text&"', ip='"&EditTextWebservicePorta.Text&"'WHERE id=1")
+		cursor = sql1.ExecQuery("SELECT * FROM Webservice")
+		cursor.Position=0
+		EditTextWebserviceIP.Text = cursor.GetString2(1)
+		EditTextWebservicePorta.Text = cursor.GetString2(2)
+	Catch
+		MsgboxAsync("Eoo ao alterar o registro.","Aviso")
+	End Try
+End Sub
+
+'Listas
+
+Sub ListViewBalanca_ItemClick (Position As Int, Value As Object)
+	Sleep(2)
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE idBalancas="& Value &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		EditTextNomeBalanca.Text = "Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+10,XMLwork.IndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")"
+		EditTextIP.Text = XMLwork.SubString2(XMLwork.IndexOf("<ipbalanca>")+11,XMLwork.IndexOf("</ipbalanca>"))
+		EditTextPorta.Text = XMLwork.SubString2(XMLwork.IndexOf("<portabalanca>")+14,XMLwork.IndexOf("</portabalanca>"))
+		EditTextDivisor.Text = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		decimal = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+		divisor = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		DisableStrictMode
+		CallSubDelayed(Me,"Connect")
+	Catch
+		MsgboxAsync("Não foi possivel se conectar com a balança","Aviso")
+	End Try
+End Sub
+
+Sub ListViewTelaBalanca_ItemClick (Position As Int, Value As Object)
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE idBalancas="& Value &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		EditTextNomeBalanca.Text = "Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+10,XMLwork.IndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")"
+		EditTextIP.Text = XMLwork.SubString2(XMLwork.IndexOf("<ipbalanca>")+11,XMLwork.IndexOf("</ipbalanca>"))
+		EditTextPorta.Text = XMLwork.SubString2(XMLwork.IndexOf("<portabalanca>")+14,XMLwork.IndexOf("</portabalanca>"))
+		EditTextDivisor.Text = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		EditTextDecimais.Text = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+		decimal = XMLwork.SubString2(XMLwork.IndexOf("<decimais>")+10,XMLwork.IndexOf("</decimais>"))
+		divisor = XMLwork.SubString2(XMLwork.IndexOf("<divisor>")+9,XMLwork.IndexOf("</divisor>"))
+		If  XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>")) = "g" Then
+			ListViewTipoPesagem.Clear
+			ListViewTipoPesagem.AddSingleLine("g")
+			ListViewTipoPesagem.AddSingleLine("kg")
+			ListViewTipoPesagem.SetSelection(0)
+		Else
+			ListViewTipoPesagem.Clear
+			ListViewTipoPesagem.AddSingleLine("kg")
+			ListViewTipoPesagem.AddSingleLine("g")
+			ListViewTipoPesagem.SetSelection(0)
+		End If
+	Catch
+		MsgboxAsync("Eoo ao carregar a balança.","Aviso")
+	End Try
+End Sub
+
+Sub ListViewTipoPesagem_ItemClick (Position As Int, Value As Object)
+	listPosition =  Value
+End Sub
+
+Sub ButtonBalanaAlterar_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num="&positionDB2&";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim idBalanca As Int = XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>"))
+		Dim url As String =  URLglobal & "/ExecQueryUPDATE unilever_pi.balancas SET balanca='"& EditTextNomeBalanca.Text &"', ipbalanca='"& EditTextIP.Text &"', portabalanca="& EditTextPorta.Text &", divisor="& EditTextDivisor.Text &", decimais="& EditTextDecimais.Text &" WHERE idbalancas="& idBalanca &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		ListViewTelaBalanca.Clear
+		ListViewBalanca.Clear
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent = XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+		If count=1 Then
+			ListViewBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+			ListViewTelaBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" "&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+		Else
+			For i=1 To count
+				ListViewBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+				ListViewTelaBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+				XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+				XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			Next
+		End If
+	Catch
+		count  =  count
+	End Try
+End Sub
+
+Sub ButtonDeletarBalanca_Click
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t WHERE row_num="&positionDB2&";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim idBalanca As Int = XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>"))
+		Dim url As String =  URLglobal & "/ExecQueryDELETE FROM unilever_pi.balancas WHERE idbalancas="& idBalanca &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		ListViewTelaBalanca.Clear
+		ListViewBalanca.Clear
+		Dim url As String =  URLglobal & "/ExecQuerySELECT * FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais, row_number() OVER (order by idBalancas) as row_num FROM (SELECT idbalancas, balanca, tipopeso, tipocom, portaserial, bauderate, parity, databits, encoding, ipbalanca, portabalanca, divisor, decimais from unilever_pi.balancas) t WHERE tipocom='rede') t;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+		XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+		XMLCurrent= XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+		If count=1 Then
+			ListViewBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+			ListViewTelaBalanca.AddSingleLine2("Balança "&XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>"))&" "&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.LastIndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.LastIndexOf("</idbalancas>")))
+		Else
+			For i=1 To count
+				ListViewBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+				ListViewTelaBalanca.AddSingleLine2(XMLwork.SubString2(XMLwork.IndexOf("<balanca>")+9,XMLwork.IndexOf("</balanca>"))&" ("&XMLwork.SubString2(XMLwork.IndexOf("<tipopeso>")+10,XMLwork.IndexOf("</tipopeso>"))&")",XMLwork.SubString2(XMLwork.IndexOf("<idbalancas>")+12,XMLwork.IndexOf("</idbalancas>")))
+				XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+				XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			Next
+		End If
+	Catch
+		MsgboxAsync("Eoo ao alterar o registro.","Aviso")
+	End Try
+End Sub
+
+Sub ListViewCampanha_ItemClick (Position As Int, Value As Object)
+	Try
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& Value &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Campanha =  Value
+		If XMLwork.Contains("<SQL>") = True Then
+			Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+			XMLCurrent = XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			ListViewCUCPesagem.Clear
+			ListProdutosPesagem.Clear		
+			For i=1 To count-1
+				ListProdutosPesagem.Add(XMLCurrent.SubString2(XMLCurrent.IndexOf("<CodigoMaterial>")+16,XMLCurrent.IndexOf("</CodigoMaterial>")))
+				ListViewCUCPesagem.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<CodigoMaterial>")+16,XMLCurrent.IndexOf("</CodigoMaterial>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<DescricaoMaterial>")+19,XMLCurrent.IndexOf("</DescricaoMaterial>")).Trim&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<Peso>")+6,XMLCurrent.IndexOf("</Peso>"))&" " &XMLCurrent.SubString2(XMLCurrent.IndexOf("<Unidade>")+9,XMLCurrent.IndexOf("</Unidade>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<EmbFechada>")+12,XMLCurrent.IndexOf("</EmbFechada>"))&" " &XMLCurrent.SubString2(XMLCurrent.IndexOf("<Unidade>")+9,XMLCurrent.IndexOf("</Unidade>"))&" ("&XMLCurrent.SubString2(XMLCurrent.IndexOf("<UnidadeEmb>")+12,XMLCurrent.IndexOf("</UnidadeEmb>"))&") | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<PesoRota1>")+11,XMLCurrent.IndexOf("</PesoRota1>"))&" | "&XMLCurrent.SubString2(XMLCurrent.IndexOf("<PesoRota2>")+11,XMLCurrent.IndexOf("</PesoRota2>")),XMLCurrent.SubString2(XMLCurrent.IndexOf("<CodigoMaterial>")+16,XMLCurrent.IndexOf("</CodigoMaterial>")))
+				XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+				XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+			Next
+		End If
+	Catch
+		MsgboxAsync("Erro ao carregar as campanhas", "Erro")
+	End Try
+End Sub
+
+Sub ButtonConcluirPesagem_Click
+	Try
+	Dim PesoBalanca As Double =  EditTextPeso.Text
+	If PesoAlvo =  0.0 Then
+		MsgboxAsync("Peso já está correto","Peso")
+	Else
+		Dim url As String =  URLglobal & "/ExecQueryUPDATE unilever_pi.pesagemreceita SET PesoRota1="& PesoBalanca &" WHERE IdCampanha="& Campanha &" AND CodigoMaterial="& Cod &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork="1" Then
+				Dim url As String =  URLglobal & "/ExecQuerySELECT idCampanha, idPesagemProg, DataHora, Usuario, IdProcesso, Impresso, row_number() OVER (order by idCampanha) as row_num FROM unilever_pi.campanha WHERE idPesagemProg="& IdPesagemProg &";"
+				Job1.GetRequest.SetContentType("application/XML")
+				Job1.PostString(url,"")
+				Wait For (Job1) JobDone
+				XMLwork = Job1.GetString
+				If XMLwork.Contains("<SQL>") = True Then
+					Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+					XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+					XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+					ListViewCUCPesagem.Clear
+					For i=1 To count-1
+						If i=1 Then
+							Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")) &";"
+							Job1.PostString(url,"")
+							Job1.GetRequest.SetContentType("application/XML")
+							Wait For (Job1) JobDone
+							Dim XMLwork3 As String = Job1.GetString
+							Dim count2 As Int = XMLwork3.SubString2(XMLwork3.LastIndexOf("<row_num>")+9, XMLwork3.LastIndexOf("</row_num>"))
+							Dim XMLCurrent2 As String = XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+							Campanha =  XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>"))
+							ListViewCUCPesagem.Clear
+							ListProdutosPesagem.Clear
+							For x=1 To count2-1
+								ListProdutosPesagem.Add(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+								ListViewCUCPesagem.AddSingleLine2(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<DescricaoMaterial>")+19,XMLCurrent2.IndexOf("</DescricaoMaterial>")).Trim&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Peso>")+6,XMLCurrent2.IndexOf("</Peso>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<EmbFechada>")+12,XMLCurrent2.IndexOf("</EmbFechada>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" ("&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<UnidadeEmb>")+12,XMLCurrent2.IndexOf("</UnidadeEmb>"))&") | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota1>")+11,XMLCurrent2.IndexOf("</PesoRota1>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota2>")+11,XMLCurrent2.IndexOf("</PesoRota2>")),XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+								XMLwork3 = XMLwork3.SubString(XMLwork3.IndexOf("</SQL>")+6)
+								XMLCurrent2 =  XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+							Next
+						End If
+						ListViewCampanha.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")),XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")))
+						XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+						XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+					Next
+				End If
+			End If
+		End If
+	Catch
+		MsgboxAsync("Erro ao adicionar o peso.","Erro")
+	End Try 
+End Sub
+
+Sub ListViewCUCPesagem_ItemClick (Position As Int, Value As Object)
+	Try
+		Cod = Value
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& Campanha &" AND CodigoMaterial="& Value &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork.Contains("<SQL>")= True Then
+			PesoRota1 = XMLwork.SubString2(XMLwork.IndexOf("<PesoRota1>")+11,XMLwork.IndexOf("</PesoRota1>"))
+			EmbFechada = XMLwork.SubString2(XMLwork.IndexOf("<EmbFechada>")+12,XMLwork.IndexOf("</EmbFechada>"))
+			PesoAlvo = XMLwork.SubString2(XMLwork.IndexOf("<Peso>")+6,XMLwork.IndexOf("</Peso>")).Replace(".","")
+			UnidadeAlvo = XMLwork.SubString2(XMLwork.IndexOf("<Unidade>")+9,XMLwork.IndexOf("</Unidade>"))
+		End If
+		PesoAlvo = PesoAlvo-PesoRota1
+		UnidadeAlvo =  "G"
+		Dim url As String =  URLglobal & "/ExecQuerySELECT (pesoMinimo-Tolerancia) As PesoMinimo, (pesoMaximo+Tolerancia) As PesoMaximo FROM unilever_pi.tolerancia WHERE "& PesoAlvo &" >= PesoMinimo AND "& PesoAlvo &" <= PesoMaximo AND UM='"& UnidadeAlvo &"' LIMIT 1;"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		Job1.Release
+		If XMLwork.Contains("<SQL>") = True Then
+			ToleranciaMinimo = XMLwork.SubString2(XMLwork.IndexOf("<PesoMinimo>")+12,XMLwork.IndexOf("</PesoMinimo>"))
+			ToleranciaMaximo = XMLwork.SubString2(XMLwork.IndexOf("<PesoMaximo>")+12,XMLwork.IndexOf("</PesoMaximo>"))
+		End If
+	Catch
+		MsgboxAsync("Erro ao carregar as campanhas", "Erro")
+	End Try
+End Sub
+
+Sub ButtonEmbalagem_Click
+	Try'
+		Dim PesoAtual As Double
+		Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& Campanha &" AND CodigoMaterial="& Cod &";"
+		Job1.GetRequest.SetContentType("application/XML")
+		Job1.PostString(url,"")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork.Contains("<SQL>") = True Then
+			PesoAtual  = XMLwork.SubString2(XMLwork.IndexOf("<PesoRota2>")+11,XMLwork.IndexOf("</PesoRota2>"))
+		End If
+		Dim url As String =  URLglobal & "/ExecQueryUPDATE unilever_pi.pesagemreceita SET PesoRota2="& (EmbFechada + PesoAtual) &" WHERE IdCampanha="& Campanha &" AND CodigoMaterial="& Cod &";"
+		Job1.PostString(url,"")
+		Job1.GetRequest.SetContentType("application/XML")
+		Wait For (Job1) JobDone
+		XMLwork = Job1.GetString
+		If XMLwork="1" Then
+			Dim url As String =  URLglobal & "/ExecQuerySELECT idCampanha, idPesagemProg, DataHora, Usuario, IdProcesso, Impresso, row_number() OVER (order by idCampanha) as row_num FROM unilever_pi.campanha WHERE idPesagemProg="& IdPesagemProg &";"
+			Job1.GetRequest.SetContentType("application/XML")
+			Job1.PostString(url,"")
+			Wait For (Job1) JobDone
+			XMLwork = Job1.GetString
+			If XMLwork.Contains("<SQL>") = True Then
+				Dim count As Int = XMLwork.SubString2(XMLwork.LastIndexOf("<row_num>")+9, XMLwork.LastIndexOf("</row_num>"))
+				XMLwork =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>"),XMLwork.LastIndexOf("</SQL>")+6)
+				XMLCurrent = XMLwork.SubString2(5,XMLwork.IndexOf("</SQL>"))
+				ListViewCUCPesagem.Clear
+				For i=1 To count-1
+					If i=1 Then
+						Dim url As String =  URLglobal & "/ExecQuerySELECT idPesagemReceita, IdCampanha, Peso, Unidade, PesoMin, PesoMax, CodigoMaterial, Obrigatorio, DescricaoMaterial, EmbFechada, UnidadeEmb, PesoRota1, PesoRota2, PesoRota3, FaseProd, QuantPesagem, NumeroMix, Alergenico, PesoRota4, row_number() OVER (order by idPesagemReceita) as row_num FROM unilever_pi.pesagemreceita WHERE IdCampanha="& XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")) &";"
+						Job1.PostString(url,"")
+						Job1.GetRequest.SetContentType("application/XML")
+						Wait For (Job1) JobDone
+						Dim XMLwork3 As String = Job1.GetString
+						Dim count2 As Int = XMLwork3.SubString2(XMLwork3.LastIndexOf("<row_num>")+9, XMLwork3.LastIndexOf("</row_num>"))
+						Dim XMLCurrent2 As String = XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+						Campanha =  XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>"))
+						ListViewCUCPesagem.Clear
+						ListProdutosPesagem.Clear
+						For x=1 To count2-1
+							ListProdutosPesagem.Add(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+							ListViewCUCPesagem.AddSingleLine2(XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<DescricaoMaterial>")+19,XMLCurrent2.IndexOf("</DescricaoMaterial>")).Trim&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Peso>")+6,XMLCurrent2.IndexOf("</Peso>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<EmbFechada>")+12,XMLCurrent2.IndexOf("</EmbFechada>"))&" " &XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<Unidade>")+9,XMLCurrent2.IndexOf("</Unidade>"))&" ("&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<UnidadeEmb>")+12,XMLCurrent2.IndexOf("</UnidadeEmb>"))&") | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota1>")+11,XMLCurrent2.IndexOf("</PesoRota1>"))&" | "&XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<PesoRota2>")+11,XMLCurrent2.IndexOf("</PesoRota2>")),XMLCurrent2.SubString2(XMLCurrent2.IndexOf("<CodigoMaterial>")+16,XMLCurrent2.IndexOf("</CodigoMaterial>")))
+							XMLwork3 = XMLwork3.SubString(XMLwork3.IndexOf("</SQL>")+6)
+							XMLCurrent2 =  XMLwork3.SubString2(XMLwork3.IndexOf("<SQL>")+5,XMLwork3.IndexOf("</SQL>"))
+						Next
+					End If
+					ListViewCampanha.AddSingleLine2(XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")),XMLCurrent.SubString2(XMLCurrent.IndexOf("<idCampanha>")+12,XMLCurrent.IndexOf("</idCampanha>")))
+					XMLwork = XMLwork.SubString(XMLwork.IndexOf("</SQL>")+6)
+					XMLCurrent =  XMLwork.SubString2(XMLwork.IndexOf("<SQL>")+5,XMLwork.IndexOf("</SQL>"))
+				Next
+			End If
+		End If
+	Catch
+		MsgboxAsync("Erro ao adicionar Embalagem Fechada","Erro")
+	End Try
+End Sub

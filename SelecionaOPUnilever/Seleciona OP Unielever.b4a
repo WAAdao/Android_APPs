@@ -1,0 +1,920 @@
+﻿Build1=Default,b4a.example
+File1=arrow-left-circle.png
+File10=login.bal
+File11=logo-aplipackmod.png
+File12=logounileverwhite.png
+File13=pesagem.bal
+File14=plus-circle.png
+File15=qrcode2.bal
+File16=scan.png
+File17=scanwhite.png
+File18=settings.bal
+File2=check2.png
+File3=data.png
+File4=data_ok.png
+File5=dataterminalpesagem3.db
+File6=dataterminalpesagem4 - Copia.db
+File7=dataterminalpesagem6.db
+File8=eraser-variant.png
+File9=layout.bal
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup17=Default Group
+FileGroup18=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=core
+Library2=okhttputils2
+Library3=sql
+Library4=xui
+Library5=abzxing
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="26"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=Autostart
+Module2=Starter
+NumberOfFiles=18
+NumberOfLibraries=5
+NumberOfModules=2
+Version=11
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Seleciona OP Unilever
+	#VersionCode: 1
+	#VersionName: Beta
+	#SupportedOrientations: landscape
+	#CanInstallToExternalStorage: True
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: True
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	Private xui As XUI
+	Dim sql1  As SQL
+	Dim cursor As Cursor
+End Sub
+
+Sub Globals
+	'Main
+	Private ListViewOP As ListView
+	Private LabelClockMain As Label
+	
+	'Panel
+	Private PanelMain As Panel
+	Private PanelSettings As Panel
+	Private PanelLogin As Panel
+	Private PanelPesagem As Panel
+	Private ButtonConfig As Button
+	Private PanelQRCode2 As Panel
+	
+	'Barcode
+	Private ButtonValidate As Button
+	Private EditTextBarcode As EditText
+	Private ButtonVoltarPesagem As Button
+	Private ButtonLimparBarcode As Button
+	Private Barcode1 As String
+	Private Barcode2 As String
+	Private BarcodeSSCC As String
+	Dim myABBarcode As ABZxing
+	Dim myABBarcode2 As ABZxing
+	Private Quantidade As Int = 0
+	Private ButtonScan As Button
+	Private EditTextBarcode1 As EditText
+	Private EditTextBarcode2 As EditText
+	Private EditTextBarcodeSSCC As EditText
+	Private EditTextLote As EditText
+	Private EditTextProduto As EditText
+	Private EditTextQuantidade As EditText
+	Private EditTextValidade As EditText
+	Private Validade As String
+	Private Lote As Int
+	Private Material As String
+	Private DataProducao As String
+	Private EditTextFabricacao As EditText
+	
+	' Dados
+	Private EditTextLinha As EditText
+	Private EditTextWebservice As EditText
+	Private filename As String
+	Dim NomeTerminal As String
+	Dim AddressWebservice As String
+	
+	'Tela Login
+	Private ButtonLimparLogin As Button
+	Private ButtonLogin As Button
+	Private ButtonVoltarLogin As Button
+	Private EditTextSenhaLogin As EditText
+	Private EditTextUsuarioLogin As EditText
+	Private LabelClockLogin As Label
+	Private ButtonVoltar As Button
+	Private BtScan2 As Button
+	Private ButtonVoltarOP As Button
+	
+	'Private SalaPesagem As String = ""
+	Private Bomba As String = ""
+	Private SSCC As String = ""
+	Private CodMaterial As String = ""
+	Private OPSap As String = ""
+	Private OrdemProdSAP(150) As String
+	Private LabelScan As Label
+	Private IdPesagem As String = ""
+	Private Peso As String = ""
+	Private ButtonLoginOP2 As Button
+	Private Logado As Boolean = False
+	Private ButtonOP1 As Button
+	Private ButtonOP2 As Button
+	Private ButtonOP3 As Button
+	Private ButtonOP4 As Button
+	Private ButtonOP5 As Button
+	Private ButtonOP6 As Button
+	Private OPSelecionadaButton As Int = 0
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Try
+		PanelMain.Initialize("") : PanelMain.Visible = True
+		PanelMain.LoadLayout("Layout")
+		Activity.AddView(PanelMain, 0, 0, 100%x, 100%y)
+
+		PanelSettings.Initialize("") : PanelSettings.Visible = False
+		PanelSettings.LoadLayout("Settings")
+		Activity.AddView(PanelSettings, 0, 0, 100%x, 100%y)
+
+		PanelLogin.Initialize("") : PanelLogin.Visible = False
+		PanelLogin.LoadLayout("Login")
+		Activity.AddView(PanelLogin, 0, 0, 100%x, 100%y)
+
+		PanelPesagem.Initialize("") : PanelPesagem.Visible = False
+		PanelPesagem.LoadLayout("Pesagem")
+		Activity.AddView(PanelPesagem, 0, 0, 100%x, 100%y)
+
+		PanelQRCode2.Initialize("") : PanelQRCode2.Visible = False
+		PanelQRCode2.LoadLayout("QRCode2")
+		Activity.AddView(PanelQRCode2,0,0,100%x,100%y)
+		
+		filename  = "dataterminalpesagem6.db"
+		
+		If File.Exists(File.DirInternal,filename) = False Then
+			File.Copy(File.DirAssets,filename,File.DirInternal,filename)
+		End If
+		
+		If sql1.IsInitialized = False Then
+			sql1.Initialize(File.DirInternal, filename, False)
+		End If
+		
+		cursor = sql1.ExecQuery("SELECT NomeTerminal, EnderecoWebservice FROM Data WHERE id=1;")
+		cursor.Position =  0
+		NomeTerminal = cursor.GetString2(0)
+		AddressWebservice = cursor.GetString2(1)
+		
+		ButtonOP1.Color = Colors.Green
+		ButtonOP2.Color = Colors.Red
+		ButtonOP3.Color = Colors.Red
+		ButtonOP4.Color = Colors.Red
+		ButtonOP5.Color = Colors.Red
+		ButtonOP6.Color = Colors.Red
+		OPSelecionadaButton = 1
+		
+		GetOPAtiva(True)
+		Clock(True)
+	Catch
+		ToastMessageShow("Erro ao inicar aplicativo.",False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+Sub Activity_Resume
+	GetOPAtiva(True)
+	Clock(True)
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	Do While UserClosed = True
+		Sleep(1000)
+		Clock(False)
+		GetOPAtiva(False)
+	Loop
+End Sub
+
+' Relógio
+
+Private Sub Clock(state As Boolean)
+	Do While state = True
+		Dim time As String = DateTime.Time(DateTime.Now)
+		LabelClockLogin.Text = time
+		LabelClockMain.Text = time
+		Sleep(500)
+	Loop
+End Sub
+
+'Retorna as OPs Ativas
+
+Private Sub GetOPAtiva (state As Boolean)
+	Do While state = True
+		Try
+			Dim URL As String
+			Sleep(1000)
+			Dim XMLWork As String
+			Dim XML As String
+			Dim JobOP As HttpJob
+			Dim Result As String
+			Dim Quant As Int
+			Dim b As Bitmap
+			Dim c As Bitmap
+			Dim Ordens As String
+			Dim OrdemProd As String
+			Dim StatusOP As String
+			Dim IdOrdemProd As String
+			Dim OrdemProduc As String
+			Dim DescricaoCUC As String
+			Dim DataHoraSAP As String
+			Dim SetorSelec As Int
+			
+			URL = AddressWebservice
+			XML = "<?xml version='1.0' encoding='utf-8'?>"
+			XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+			XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+			XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+			XML = XML & "<soap:Body>"
+			XML = XML & "<GetOrdensAbertasP xmlns='http://www.aplipack.com.br/'>"
+			XML = XML & "<UserSoftware>user</UserSoftware><PasswordSoftware>1234</PasswordSoftware>"
+			XML = XML & "<StatusOP>2</StatusOP></GetOrdensAbertasP>"
+			XML = XML & "</soap:Body>"
+			XML = XML & "</soap:Envelope>"
+			
+			JobOP.Initialize("JOBSOAP0", Me)
+			JobOP.PostString(URL,XML)
+			JobOP.GetRequest.SetContentType("text/xml")
+			Wait For (JobOP) JobDone
+			Sleep(200)
+
+			If JobOP.Success = True Then
+				XMLWork = JobOP.GetString
+				XMLWork = XMLWork.Replace("&lt;","<")
+				XMLWork = XMLWork.Replace("&gt;",">")
+				XMLWork = XMLWork.Replace("&amp;","-")
+				Sleep(500)
+				JobOP.Release
+
+				If XMLWork.Contains("<GetOrdensAbertasPResult>") = True Then
+					Result = XMLWork.SubString2(XMLWork.IndexOf("<Erro>")+6,XMLWork.IndexOf("</Erro>"))
+					Quant = XMLWork.SubString2(XMLWork.IndexOf("<Quantidade>")+12,XMLWork.IndexOf("</Quantidade>"))
+					If Result = "sucesso" Then
+						b.InitializeResize(File.DirAssets,"data_ok.png","24","24",True)
+
+						c.InitializeResize(File.DirAssets,"data.png","24","24",True)
+			
+						ListViewOP.Clear
+									
+						If Quant > 0 Then
+							Ordens = XMLWork.SubString2(XMLWork.IndexOf("<Ordens>")+8,XMLWork.IndexOf("</Ordens>"))
+
+							For j=0 To Quant-1
+								OrdemProd =  Ordens.SubString2(Ordens.IndexOf("<OrdemProducao>")+15,Ordens.IndexOf("</OrdemProducao>"))
+								StatusOP = OrdemProd.SubString2(OrdemProd.IndexOf("<StatusOP>")+10,OrdemProd.IndexOf("</StatusOP>"))
+								IdOrdemProd = OrdemProd.SubString2(OrdemProd.IndexOf("<IdOrdemProd>")+13,OrdemProd.IndexOf("</IdOrdemProd>"))
+								OrdemProduc = OrdemProd.SubString2(OrdemProd.IndexOf("<OrdemProd>")+11,OrdemProd.IndexOf("</OrdemProd>"))
+								DescricaoCUC = OrdemProd.SubString2(OrdemProd.IndexOf("<DescricaoCUC>")+14,OrdemProd.IndexOf("</DescricaoCUC>"))
+								DataHoraSAP = OrdemProd.SubString2(OrdemProd.IndexOf("<dataHoraSAP>")+13,OrdemProd.IndexOf("</dataHoraSAP>"))
+								SetorSelec = OrdemProd.SubString2(OrdemProd.IndexOf("<SetorSelec>")+12,OrdemProd.IndexOf("</SetorSelec>"))
+
+								OrdemProdSAP(j) = OrdemProduc
+								DataHoraSAP = DataHoraSAP.SubString2(0,9)
+								DataHoraSAP = DataHoraSAP.SubString(8) & "/" & DataHoraSAP.SubString2(5,7) & "/" & DataHoraSAP.SubString2(0,4)
+															
+								If StatusOP = "2" Then
+									If SetorSelec > 0 Then
+										'ListViewOP.AddTwoLines2("OP " & OrdemProduc & " | Data:" & DataHoraSAP, DescricaoCUC, IdOrdemProd)
+										If SetorSelec = OPSelecionadaButton Then
+											ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,b,IdOrdemProd)
+										Else
+											ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,c,IdOrdemProd)
+										End If
+										
+										Else
+										ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,c,IdOrdemProd)
+
+										'ListViewOP.AddTwoLines2("OP " & OrdemProduc & " | Data:" & DataHoraSAP, DescricaoCUC, IdOrdemProd)
+									End If
+								End If
+
+								If  j < Quant-1 Then
+									Ordens = Ordens.SubString(Ordens.IndexOf("</OrdemProducao>")+16)
+								End If
+							Next
+							
+							ListViewOP.TwoLinesAndBitmap.ItemHeight = 60dip
+							ListViewOP.TwoLinesAndBitmap.SecondLabel.TextColor = Colors.White
+							ListViewOP.TwoLinesAndBitmap.SecondLabel.TextSize = 18
+							ListViewOP.TwoLinesAndBitmap.Label.TextSize = 18
+							ListViewOP.TwoLinesAndBitmap.Label.TextColor = Colors.Black
+						Else
+							ToastMessageShow("Sem Ordens abertas.",False)
+						End If
+					End If
+				End If
+			End If
+			JobOP.Release
+		Catch LastException
+			ToastMessageShow("Erro ao carregar OPs.", False)
+			'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+		End Try
+	Loop
+End Sub
+
+' Selciona as OPs
+
+Sub ListViewOP_ItemClick (Position As Int, Value As Object)
+	Try
+		If Logado = True Then
+			Dim URL As String
+			Dim XMLWork2 As String
+			Dim OPSelecionada As Int = Value
+			Dim XML As String
+			Dim JobOP2 As HttpJob
+			Dim Result As String
+
+			OPSap = OrdemProdSAP(Position)
+			URL = AddressWebservice
+			XML = "<?xml version='1.0' encoding='utf-8'?>"
+			XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+			XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+			XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+			XML = XML & "<soap:Body>"
+			XML = XML & "<SelecionaOP xmlns='http://www.aplipack.com.br/'>"
+			XML = XML & "<UserSoftware>user</UserSoftware><PasswordSoftware>1234</PasswordSoftware>"
+			XML = XML & "<Settore>" & OPSelecionadaButton & "</Settore>"
+			XML = XML & "<IdOrdemProd>" & OPSelecionada & "</IdOrdemProd></SelecionaOP>"
+			XML = XML & "</soap:Body>"
+			XML = XML & "</soap:Envelope>"
+			
+			JobOP2.Initialize("JOBSOAP", Me)
+			JobOP2.PostString(URL,XML)
+			JobOP2.GetRequest.SetContentType("text/xml")
+			Wait For (JobOP2) JobDone
+			Sleep(100)
+
+			If JobOP2.Success = True Then
+				XMLWork2 = JobOP2.GetString
+				XMLWork2 = XMLWork2.Replace("&lt;","<")
+				XMLWork2 = XMLWork2.Replace("&gt;",">")
+				XMLWork2 = XMLWork2.Replace("&amp;","-")
+				
+				If XMLWork2.Contains("<SelecionaOPResult>") = True Then
+					Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+					
+					If Result = "sucesso" Then
+						ToastMessageShow("OP selecionada com sucesso.",False)
+						PanelMain.Visible = False
+						PanelQRCode2.Visible = True
+						Barcode1 = ""
+						Barcode2 = ""
+						BarcodeSSCC = ""
+					Else
+						ToastMessageShow("Falha so selecionar OP, tente novamente.", False)
+					End If
+				End If
+			End If
+			JobOP2.Release
+		Else
+			ToastMessageShow("Por favor faça o Login para acessar funções do sistema.",False)
+		End If
+	Catch LastException
+		ToastMessageShow("Erro ao enviar OP selecionada..", False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+'Login
+
+Sub ButtonLimparLogin_Click
+	EditTextLinha.Text = ""
+	EditTextWebservice.Text = ""
+End Sub
+
+Sub ButtonGravar_Click
+	Try
+		sql1.ExecNonQuery("UPDATE Data SET  NomeTerminal ='" & EditTextLinha.Text & _
+			"', EnderecoWebservice='" & EditTextWebservice.Text & "' WHERE id=1;")
+			
+		cursor = sql1.ExecQuery("SELECT NomeTerminal, EnderecoWebservice FROM Data WHERE id=1;")
+		cursor.Position =  0
+		NomeTerminal = cursor.GetString2(0)
+		AddressWebservice = cursor.GetString2(1)
+	Catch
+		MsgboxAsync("Erro ao gravar.","Erro")
+	End Try
+End Sub
+
+Sub ButtonVoltarLogin_Click
+	PanelMain.Visible = True
+	PanelLogin.Visible = False
+End Sub
+
+Sub ButtonLogin_Click
+	Try
+		'Dim pass As String =  GeneratePassword
+'		If EditTextUsuarioLogin.Text = "Admin" And EditTextSenhaLogin.Text = pass Then
+'			PanelLogin.Visible = False
+'			PanelSettings.Visible = True
+'			EditTextWebservice.Text = AddressWebservice
+'			EditTextLinha.Text = NomeTerminal
+'			EditTextUsuarioLogin.Text = ""
+'			EditTextSenhaLogin.Text = ""
+'		Else
+'			ToastMessageShow("Senha ou usuario não são corretos.",False)
+'		End If
+
+		Dim URL As String
+		Dim XMLWork2 As String
+		Dim XML As String
+		Dim JobOP2 As HttpJob
+		Dim Result As String
+
+		URL = AddressWebservice
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+		XML = XML & "<soap:Body>"
+		XML = XML & "<LoginSoftware xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<Usuario>" & EditTextUsuarioLogin.Text & "</Usuario>"
+		XML = XML & "<Password>" & EditTextSenhaLogin.Text & "</Password></LoginSoftware>"
+		XML = XML & "</soap:Body>"
+		XML = XML & "</soap:Envelope>"
+
+		JobOP2.Initialize("JOBSOAP2", Me)
+		JobOP2.PostString(URL,XML)
+		JobOP2.GetRequest.SetContentType("text/xml; charset=utf-8")
+		Wait For (JobOP2) JobDone
+		Sleep(100)
+
+		If JobOP2.Success = True Then
+			XMLWork2 = JobOP2.GetString
+			XMLWork2 = XMLWork2.Replace("&lt;","<")
+			XMLWork2 = XMLWork2.Replace("&gt;",">")
+			XMLWork2 = XMLWork2.Replace("&amp;","-")
+			
+			If XMLWork2.Contains("<LoginSoftwareResult>") = True Then
+				Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				If Result = "sucesso" Then
+					ToastMessageShow("Logado com sucesso.",False)
+					Logado = True
+					PanelMain.Visible = True
+					PanelLogin.Visible = False
+				Else
+					ToastMessageShow(Result,False)
+				End If
+			End If
+		Else
+			ToastMessageShow("Problema no processo de Login. Tente Novamente.",True)
+		End If
+	Catch
+		ToastMessageShow("Erro ao fazer Login.",False)
+	End Try
+End Sub
+
+'Private Sub GeneratePassword As String
+'	Try
+'		Dim passwordHour As Int = DateTime.GetHour(DateTime.Now)
+'		passwordHour = passwordHour * 3
+'		Dim passwordMinute As Int = DateTime.GetMinute(DateTime.Now)
+'		passwordMinute = passwordMinute *2
+'		Dim password As String = passwordHour
+'		Dim password2 As String =  passwordMinute
+'		If password2.Length = 1 Then
+'			password2 = "0" & password2
+'		Else If password2.Length >= 3 Then
+'			password2 = password2.SubString2(0,2)
+'		End If
+'		Return password & password2
+'	Catch
+'		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+'		ToastMessageShow("Erro ao gerar senha.",False)
+'		Return ""
+'	End Try
+'End Sub
+
+'Pesagem
+
+Sub ButtonValidate_Click
+	If Barcode1.Length > 0 And Barcode2.Length > 0 And BarcodeSSCC.Length > 0 Then
+		SendSSCC
+	Else if Barcode1.Length = 0 Then
+		ToastMessageShow("Barcode 1 Vazio.",False)
+	Else if Barcode2.Length = 0 Then
+		ToastMessageShow("Barcode 2 Vazio.",False)
+	Else if BarcodeSSCC.Length = 0 Then
+		ToastMessageShow("Barcode SSCC Vazio.",False)
+	End If
+End Sub
+
+Sub ButtonVoltarPesagem_Click
+	PanelMain.Visible = True
+	PanelPesagem.Visible = False
+End Sub
+
+Sub ButtonConfig_Click
+	PanelLogin.Visible = True
+	PanelMain.Visible = False
+End Sub
+
+Private Sub ButtonLimparBarcode_Click
+	EditTextBarcode.Text = ""
+End Sub
+
+Private Sub EditTextBarcode_TextChanged (Old As String, New As String)
+	Try
+		If EditTextBarcode.Text.Length = 42 And EditTextBarcode.Text.SubString2(0,2) = "90" Then
+			Barcode1 = EditTextBarcode.Text
+			Barcode1 = Barcode1.Replace(Chr(29),"")
+			Barcode1 = Barcode1.Replace(" ","")
+			Quantidade = Barcode1.SubString2(12,18)
+			ToastMessageShow("Bracode 1 capturado com sucesso.",False)
+			EditTextQuantidade.Text = Quantidade
+			Material = Barcode1.SubString2(2,10)
+			EditTextProduto.Text = Material
+			Lote = Barcode1.SubString(20)
+			EditTextLote.Text = Lote
+			EditTextBarcode1.Text = Barcode1
+			EditTextBarcode.Text = ""
+		Else if EditTextBarcode.Text.Length = 33 Then
+			If EditTextBarcode.Text.SubString2(0,2) = "02" Then
+				Barcode2 = EditTextBarcode.Text
+				Barcode2 = Barcode2.Replace(Chr(29),"")
+				Barcode2 = Barcode2.Replace(" ","")
+				ToastMessageShow("Bracode 2 capturado com sucesso.",False)
+				Validade = Barcode2.SubString2(18,24)
+				Validade = Validade.SubString(4) & "/" & Validade.SubString2(2,4) & "/20" & Validade.SubString2(0,2)
+				EditTextValidade.Text = Validade
+				DataProducao = Barcode2.SubString(26)
+				DataProducao = DataProducao.SubString(4) & "/" & DataProducao.SubString2(2,4) & "/20" & DataProducao.SubString2(0,2)
+				EditTextFabricacao.Text = DataProducao
+				EditTextBarcode2.Text = Barcode2
+				EditTextBarcode.Text = ""
+			End If
+		Else if EditTextBarcode.Text.Length = 17 Then
+			If EditTextBarcode.Text.SubString2(0,2) = "00" Then
+				BarcodeSSCC = EditTextBarcode.Text
+				BarcodeSSCC = BarcodeSSCC.Replace(Chr(29),"")
+				ToastMessageShow("Bracode SSCC capturado com sucesso.",False)
+				EditTextBarcodeSSCC.Text = BarcodeSSCC
+				EditTextBarcode.Text = ""
+			End If
+		End If
+	Catch
+		ToastMessageShow("Erro ao processar código.",False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+Private Sub ButtonScan_Click
+	myABBarcode.ABGetBarcode("myabbarcode", "")
+End Sub
+
+Sub myABBarcode_BarcodeFound (barCode As String, formatName As String)
+'	Try
+'		If formatName = "CODE_128" Then
+'			If barCode.Length = 40 And barCode.SubString2(0,2) = "90" Then
+'				Barcode1 = barCode
+'				Barcode1 = Barcode1.Replace(Chr(29),"")
+'				Quantidade = Barcode1.SubString2(12,18)
+'				ToastMessageShow("Bracode 1 capturado com sucesso.",False)
+'				EditTextQuantidade.Text = Quantidade
+'				Material = Barcode1.SubString2(2,10)
+'				EditTextProduto.Text = Material
+'				Lote = Barcode1.SubString(20)
+'				EditTextLote.Text = Lote
+'				EditTextBarcode1.Text = Barcode1
+'			Else if barCode.Length = 32 Then
+'				If barCode.SubString2(0,2) = "02" Then
+'					Barcode2 = barCode
+'					Barcode2 = Barcode2.Replace(Chr(29),"")
+'					ToastMessageShow("Bracode 2 capturado com sucesso.",False)
+'					Validade = Barcode2.SubString2(18,24)
+'					Validade = Validade.SubString(4) & "/" & Validade.SubString2(2,4) & "/20" & Validade.SubString2(0,2)
+'					EditTextValidade.Text = Validade
+'					DataProducao = Barcode2.SubString(26)
+'					DataProducao = DataProducao.SubString(4) & "/" & DataProducao.SubString2(2,4) & "/20" & DataProducao.SubString2(0,2)
+'					EditTextFabricacao.Text = DataProducao
+'					EditTextBarcode2.Text = Barcode2
+'				End If
+'			Else if barCode.Length = 20 And barCode.SubString2(0,2) = "00" Then
+'				BarcodeSSCC = barCode
+'				BarcodeSSCC = BarcodeSSCC.Replace(Chr(29),"")
+'				ToastMessageShow("Bracode SSCC capturado com sucesso.",False)
+'				EditTextBarcodeSSCC.Text = BarcodeSSCC
+'			End If
+'		End If
+'	Catch
+'		ToastMessageShow("Erro ao processar código.",False)
+'		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+'	End Try
+	Try
+		If barCode.SubString2(0,1) = "@" Then
+'			Dim Aplha As String = "ABCDEFGHIJLMNOPQRSTUVXYZ"
+'			Dim i As Int =0
+'			SalaPesagem = barCode.SubString2(1,2)
+'			Do While SalaPesagem.Contains(Aplha.SubString2(i,i+1)) = False
+'				i = i+1
+'			Loop
+'			SalaPesagem= i+1
+			Bomba = barCode.SubString(3)
+			ToastMessageShow("Código lido com sucesso.",False)
+		Else
+			SSCC = barCode.SubString2(0,9)
+			CodMaterial = barCode.SubString2(10,18)
+			ToastMessageShow("Código lido com sucesso.",False)
+		End If
+	Catch LastException
+		ToastMessageShow("Código Invalido", False)
+	End Try
+	
+	If Bomba.Length > 0 And SSCC.Length > 0 And CodMaterial.Length > 0 Then
+		VinculaBomba
+	End If
+End Sub
+
+Private Sub SendSSCC
+	Try
+		Dim URL As String
+		Dim XMLWork2 As String
+		Dim XML As String
+		Dim JobOP3 As HttpJob
+		Dim Result As String
+
+		URL = AddressWebservice
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>"
+		XML = XML & "<soap:Body><RegistraSSCC xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<UserSoftware>user</UserSoftware><PasswordSoftware>1234</PasswordSoftware>"
+		XML = XML & "<Barcode1>" & Barcode1 & "</Barcode1><Barcode2>" & Barcode2 & "</Barcode2>"
+		XML = XML & "<BarcodeSSCC>" & BarcodeSSCC & "</BarcodeSSCC>"
+		XML = XML & "<UsuarioLeitura>user</UsuarioLeitura><Quantidade>" & Quantidade & "</Quantidade>"
+		XML = XML & "</RegistraSSCC></soap:Body></soap:Envelope>"
+
+		Barcode1 = Barcode1.Replace(" ","")
+		Barcode2 = Barcode2.Replace(" ","")
+		BarcodeSSCC = BarcodeSSCC.Replace(" ","")
+
+		JobOP3.Initialize("JOBSOAP", Me)
+		JobOP3.PostString(URL,XML)
+		JobOP3.GetRequest.SetContentType("text/xml")
+		Wait For (JobOP3) JobDone
+		Sleep(100)
+
+		If JobOP3.Success = True Then
+			XMLWork2 = JobOP3.GetString
+			XMLWork2 = XMLWork2.Replace("&lt;","<")
+			XMLWork2 = XMLWork2.Replace("&gt;",">")
+			XMLWork2 = XMLWork2.Replace("&amp;","-")
+
+			If XMLWork2.Contains("<RegistraSSCCResult>") = True Then
+				Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				
+				If Result = "sucesso" Then
+					ToastMessageShow("SSCC registrado com sucesso.",False)
+					Barcode1 = ""
+					Barcode2 = ""
+					BarcodeSSCC = ""
+				Else
+					ToastMessageShow(Result,False)
+				End If
+			End If
+		End If
+		JobOP3.Release
+	Catch LastException
+		ToastMessageShow("Erro ao registtar SCCC.", False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+Private Sub BtScan2_Click
+	myABBarcode2.ABGetBarcode("myabbarcode2", "")
+End Sub
+
+Sub myABBarcode2_BarcodeFound (barCode As String, formatName As String)
+	Try
+		If Logado = True Then
+			If barCode.SubString2(0,1) = "@" Then
+'				Dim Aplha As String = "ABCDEFGHIJLMNOPQRSTUVXYZ"
+'				Dim i As Int =0
+'				SalaPesagem = barCode.SubString2(1,2)
+'				Do While SalaPesagem.Contains(Aplha.SubString2(i,i+1)) = False
+'					i = i+1
+'				Loop
+'				SalaPesagem= i+1
+				Bomba = barCode.SubString(3)
+				ToastMessageShow("Código lido com sucesso.",False)
+			Else
+				SSCC = barCode.SubString2(0,9)
+				CodMaterial = barCode.SubString2(10,18)
+				ToastMessageShow("Código lido com sucesso.",False)
+			End If
+		End If
+	Catch LastException
+		ToastMessageShow("Código Invalido", False)
+	End Try
+	
+	If Bomba.Length > 0 And SSCC.Length > 0 And CodMaterial.Length > 0 Then
+		GetIdPesagem
+	End If
+End Sub
+
+Private Sub ButtonVoltarOP_Click
+	PanelQRCode2.Visible=False
+	PanelMain.Visible=True
+End Sub
+
+' Méétodo para pegar a ID da pesagem
+
+Private Sub GetIdPesagem()
+	Try
+		Dim URL As String
+		Dim XMLWork2 As String
+		Dim XML As String
+		Dim JobOP2 As HttpJob
+		Dim Result As String
+
+		URL = AddressWebservice
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+		XML = XML & "<soap:Body>"
+		XML = XML & "<GetidPesagem xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<UserSoftware>user</UserSoftware><PasswordSoftware>1234</PasswordSoftware>"
+		XML = XML & "<idOrdemProdSAP>" & OPSap.Trim & "</idOrdemProdSAP>"
+		XML = XML & "<CodigoMaterial>" & CodMaterial.Trim & "</CodigoMaterial>"
+		XML = XML & "<eptRota>" & "1" & "</eptRota><IDSSCC>" & SSCC.Trim & "</IDSSCC>"
+		XML = XML & "<Settore>" & OPSelecionadaButton & "</Settore><Usuario>" & "Teste" & "</Usuario>"
+		XML = XML & "<idTerminal>" & "1" & "</idTerminal></GetidPesagem>"
+		XML = XML & "</soap:Body>"
+		XML = XML & "</soap:Envelope>"
+
+		JobOP2.Initialize("JOBSOAP", Me)
+		JobOP2.PostString(URL,XML)
+		JobOP2.GetRequest.SetContentType("text/xml")
+		Wait For (JobOP2) JobDone
+		Sleep(100)
+
+		If JobOP2.Success = True Then
+			XMLWork2 = JobOP2.GetString
+			XMLWork2 = XMLWork2.Replace("&lt;","<")
+			XMLWork2 = XMLWork2.Replace("&gt;",">")
+			XMLWork2 = XMLWork2.Replace("&amp;","-")
+			
+			If XMLWork2.Contains("<GetidPesagemResult>") = True Then
+				Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				
+				If Result = "sucesso" Then
+					IdPesagem = XMLWork2.SubString2(XMLWork2.IndexOf("<IdPesagem>")+11,XMLWork2.IndexOf("</IdPesagem>"))
+					Peso = XMLWork2.SubString2(XMLWork2.IndexOf("<Peso>")+6,XMLWork2.IndexOf("</Peso>"))
+					ToastMessageShow("ID da Pesagem valido.",False)
+				Else
+					ToastMessageShow(Result,False)
+				End If
+			End If
+		End If	
+	Catch
+		Log(LastException)
+	End Try
+End Sub
+
+' Méotod ara vincular bombas
+
+Private Sub VinculaBomba()
+	Try
+		Dim URL As String
+		Dim XMLWork2 As String
+		Dim XML As String
+		Dim JobOP2 As HttpJob
+		Dim Result As String
+
+		URL = AddressWebservice
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+		XML = XML & "<soap:Body>"
+		XML = XML & "<VinculaBomba xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<UserSoftware>user</UserSoftware><PasswordSoftware>1234</PasswordSoftware>"
+		XML = XML & "<IdSSCC>" & SSCC.Trim & "</IdSSCC>"
+		XML = XML & "<CodigoBomba>" & Bomba.Trim & "</CodigoBomba></VinculaBomba>"
+		XML = XML & "</soap:Body>"
+		XML = XML & "</soap:Envelope>"
+
+		JobOP2.Initialize("JOBSOAP", Me)
+		JobOP2.PostString(URL,XML)
+		JobOP2.GetRequest.SetContentType("text/xml")
+		Wait For (JobOP2) JobDone
+		Sleep(100)
+
+		If JobOP2.Success = True Then
+			XMLWork2 = JobOP2.GetString
+			XMLWork2 = XMLWork2.Replace("&lt;","<")
+			XMLWork2 = XMLWork2.Replace("&gt;",">")
+			XMLWork2 = XMLWork2.Replace("&amp;","-")
+			
+			If XMLWork2.Contains("<VinculaBombaResult>") = True Then
+				Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				If Result = "sucesso" Then
+					ToastMessageShow("Bomba vinculada com sucesso",False)
+				Else
+					ToastMessageShow(Result,False)
+				End If
+			End If
+		End If	
+	Catch
+		Log(LastException)
+	End Try
+End Sub
+
+' Faz o Scan das eqtiuetas
+
+Private Sub LabelScan_Click
+	myABBarcode.ABGetBarcode("myabbarcode", "")
+End Sub
+
+' Botões de selação
+
+Private Sub ButtonLoginOP2_Click
+	PanelLogin.Visible = True
+	PanelMain.Visible = False
+End Sub
+
+Private Sub ButtonOP6_Click
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	ButtonOP5.Color = Colors.Red
+	ButtonOP6.Color = Colors.Green
+	OPSelecionadaButton = 6
+End Sub
+
+Private Sub ButtonOP5_Click
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	ButtonOP5.Color = Colors.Green
+	ButtonOP6.Color = Colors.Red
+	OPSelecionadaButton = 5
+End Sub
+
+Private Sub ButtonOP4_Click
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Green
+	ButtonOP5.Color = Colors.Red
+	ButtonOP6.Color = Colors.Red
+	OPSelecionadaButton = 4
+End Sub
+
+Private Sub ButtonOP3_Click
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Green
+	ButtonOP4.Color = Colors.Red
+	ButtonOP5.Color = Colors.Red
+	ButtonOP6.Color = Colors.Red
+	OPSelecionadaButton = 3
+End Sub
+
+Private Sub ButtonOP2_Click
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Green
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	ButtonOP5.Color = Colors.Red
+	ButtonOP6.Color = Colors.Red
+	OPSelecionadaButton = 2
+End Sub
+
+Private Sub ButtonOP1_Click
+	ButtonOP1.Color = Colors.Green
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	ButtonOP5.Color = Colors.Red
+	ButtonOP6.Color = Colors.Red
+	OPSelecionadaButton = 1
+End Sub

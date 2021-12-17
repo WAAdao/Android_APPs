@@ -1,0 +1,1466 @@
+﻿Build1=Default,unileverSU.pesagem
+File1=check.png
+File10=LogoUnilever.png
+File11=Pesagem.bal
+File12=Settings.bal
+File13=warning.png
+File2=data.png
+File3=data_ok.png
+File4=dataterminalpesagem5.db
+File5=delete.png
+File6=Layout2.bal
+File7=login.bal
+File8=logo-aplipack.png
+File9=logo-aplipackfullmod.png
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=b4xtable
+Library2=core
+Library3=ime
+Library4=okhttputils2
+Library5=runtimepermissions
+Library6=sql
+Library7=xui
+Library8=xui views
+Library9=abzxing
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="30"/>~\n~<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />~\n~<uses-permission android:name="android.permission.INTERNET" />~\n~<uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />~\n~<uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:usesCleartextTraffic, "true")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=AutoStart
+Module2=CustomListView
+Module3=Starter
+NumberOfFiles=13
+NumberOfLibraries=9
+NumberOfModules=3
+Version=11
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Pesagem Unilever
+	#VersionCode: 1
+	#VersionName: 1.0 Beta
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: Landscape
+	#CanInstallToExternalStorage: True
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: True
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	Dim sql1 As SQL
+	Dim cursor As Cursor
+End Sub
+
+Sub Globals
+	' Tela Principal
+	Dim myABBarcode As ABZxing
+	Private Panel1 As Panel
+	Private XMLWork As String
+	Private URL As String = ""
+	Private ImageViewAplipack As ImageView
+	Private ImageViewUnilever As ImageView
+	Private LabelClockTV As Label
+	Private LabelOP As Label
+	Private LabelPesgaemTTitulo As Label
+	Private ListViewOP As ListView
+	Dim IdOrdemProdList As String = "0"
+	Dim IdOrdemProdListCompare As String = "0"
+	Private ListViewAvisos As ListView
+	Private B4XTablePesagem As B4XTable
+	Private PanelPesagem As Panel
+	Private ButtonOP0 As Button
+	Private ButtonOP1 As Button
+	Private ButtonOP2 As Button
+	Private ButtonOP3 As Button
+	Private ButtonOP4 As Button
+	Dim OPSelecionadaButton As Int = 1
+	Private ButtonBarcodeScan As Button
+	Private ButtonClearBarcode As Button
+	Private EditTextBarcode As EditText
+	Private ButtonRota1 As Button
+	Private ButtonRota2 As Button
+	Dim RotaSelcionada As Int
+	Dim idSSCC As String
+	Dim idProduto As String
+	Dim SSCC As String
+	'Tela Settings
+	Private ButtonGravar As Button
+	Private ButtonLimpar As Button
+	Private ButtonVoltar As Button
+	Private EditTextLinha As EditText
+	Private EditTextWebservice As EditText
+	'Paineis
+	Private PanelMain As Panel
+	Private PanelSettings As Panel
+	Private PanelLogin As Panel
+	' Dados
+	Private AddressWebservice As String = ""
+	Private NomeTerminal As String = ""
+	'Tela Login
+	Private ButtonLimparLogin As Button
+	Private ButtonLogin As Button
+	Private ButtonVoltarLogin As Button
+	Private EditTextSenhaLogin As EditText
+	Private EditTextUsuarioLogin As EditText
+	Private LabelClockLogin As Label
+	'Pesagem
+	Dim PanelPesagem2 As Panel
+	Private ButtonCancelarPesagem As Button
+	Private ButtonConcluirPesagem As Button
+	Private ButtonDesligarBomba As Button
+	Private ButtonLigarBomba As Button
+	Private LabelFuncaoBomba As Label
+	
+	Private ButtonVoltarPesagem As Button
+	Private ListViewAvisoPesagem As ListView
+	
+	Dim xErro As String
+	
+	Private EditTextPesoRequerido As EditText
+	Private EditTextPesoBomba As EditText
+	
+	Dim StatusBomba As Boolean
+	Dim FinalizadoDosagem As Boolean
+	
+	Dim habilitaImpressaoETQ As Boolean
+	Dim ImpressoraIP As String = ""
+	Dim ImpressoraPorta As String = "9100"
+	Dim ZPLEtiqueta As String 
+	
+	ZPLEtiqueta = "^XA^PW1279"
+	ZPLEtiqueta = ZPLEtiqueta & "^BY4,3,112^FT37,984^BCN,,Y,N"
+	ZPLEtiqueta = ZPLEtiqueta & "^FD&gt;:@peso@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^BY4,3,112^FT36,748^BCN,,Y,N"
+	ZPLEtiqueta = ZPLEtiqueta & "^FD&gt;;10000000000000000001^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^BY4,3,112^FT37,509^BCN,,Y,N"
+	ZPLEtiqueta = ZPLEtiqueta & "^FD&gt;:@codmaterial@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT412,260^A0N,28,28^FH\^FDTamanho Batch: @batch@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT36,259^A0N,28,28^FH\^FDOrdem Prod: @ordemprod@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^BY2,3,56^FT43,95^BCN,,Y,N"
+	ZPLEtiqueta = ZPLEtiqueta & "^FD&gt;:@barcode@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT37,850^A0N,45,45^FH\^FDPeso KG^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT37,615^A0N,45,45^FH\^FDLote^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT36,208^A0N,28,28^FH\^FDDescricao: @descris@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT37,376^A0N,45,45^FH\^FDMaterial^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT466,1112^A0N,28,28^FH\^FDPhysical Hazard: @phys@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT328,1159^A0N,28,28^FH\^FDData Prod: @dataprod@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT37,1159^A0N,28,28^FH\^FDValidade: @validade@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT266,1112^A0N,28,28^FH\^FDFlam: @flam@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT421,180^A0N,23,24^FH\^FDTerminal: @terminal@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT421,141^A0N,23,24^FH\^FDBalanca: @balanca@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT421,105^A0N,23,24^FH\^FDUsuario: @user@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT38,1112^A0N,28,28^FH\^FDHealth: @health@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT421,65^A0N,23,24^FH\^FD@data@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT36,159^A0N,28,28^FH\^FDCodigo: @cod@^FS"
+	ZPLEtiqueta = ZPLEtiqueta & "^FT815,999^BQN,2,10^FDMA,@cod@|@peso@|10000000000000000001^FS^PQ1,0,1,Y^XZ"
+	
+	Dim retornoBalancaStatus As Boolean
+	Dim retorno_Bomba As Boolean
+
+	Dim XML_BombaStatus As String
+	
+	Dim Login_Status As Boolean
+	Dim Current_User As String
+	Dim Current_PWD As String
+	
+	Dim Current_BombaID As String
+	Dim Prefix_Bomba As String
+	Dim Prefix_Balanca As String
+	Dim Prefix_CLP As String
+	Dim Peso As String
+	
+	Private col1, col2, col3, col4, col5, col6 As B4XTableColumn
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Try
+		PanelMain.Initialize("") : PanelMain.Visible = True
+		PanelMain.LoadLayout("Layout2")
+		Activity.AddView(PanelMain, 0, 0, 100%x, 100%y)
+		
+		PanelSettings.Initialize("") : PanelSettings.Visible = False
+		PanelSettings.LoadLayout("Settings")
+		Activity.AddView(PanelSettings, 0, 0, 100%x, 100%y)
+		
+		PanelLogin.Initialize("") : PanelLogin.Visible = False
+		PanelLogin.LoadLayout("Login")
+		Activity.AddView(PanelLogin, 0, 0, 100%x, 100%y)
+		
+		PanelPesagem2.Initialize("") : PanelPesagem2.Visible = False
+		PanelPesagem2.LoadLayout("Pesagem")
+		Activity.AddView(PanelPesagem2, 0, 0, 100%x, 100%y)
+		
+		' SQL
+		Dim Filename As String
+		Filename  = "dataterminalpesagem5.db"
+		If File.Exists(File.DirInternal,Filename) = False Then
+			File.Copy(File.DirAssets,Filename,File.DirInternal,Filename)
+		End If
+		
+		If sql1.IsInitialized = False Then
+			sql1.Initialize(File.DirInternal, Filename, False)
+		End If
+		
+		cursor = sql1.ExecQuery("SELECT NomeTerminal, EnderecoWebservice FROM Data WHERE id=1;")
+		cursor.Position = 0
+		NomeTerminal = cursor.GetString2(0).Trim
+		AddressWebservice = cursor.GetString2(1)
+		'URL = AddressWebservice
+		
+		Sleep(100)
+		
+		'OP
+		ListViewOP.TwoLinesLayout.ItemHeight =  45dip '70dip '52dip
+		
+		Dim xui As XUI
+		
+		' Table Pesagem
+'		B4XTablePesagem.AddColumn("Material",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'		B4XTablePesagem.AddColumn("Unidade", B4XTablePesagem.COLUMN_TYPE_TEXT)
+'		B4XTablePesagem.AddColumn("P. Requerido", B4XTablePesagem.COLUMN_TYPE_TEXT)
+'		B4XTablePesagem.AddColumn("Rota 1",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'		B4XTablePesagem.AddColumn("Rota 2",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'		B4XTablePesagem.AddColumn("Bomba",B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col1 = B4XTablePesagem.AddColumn("Material",B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col2 = B4XTablePesagem.AddColumn("Unidade", B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col3 = B4XTablePesagem.AddColumn("P. Requerido", B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col4 = B4XTablePesagem.AddColumn("Rota 1",B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col5 = B4XTablePesagem.AddColumn("Rota 2",B4XTablePesagem.COLUMN_TYPE_TEXT)
+		col6 = B4XTablePesagem.AddColumn("Bomba",B4XTablePesagem.COLUMN_TYPE_TEXT)
+		'B4XTablePesagem.RowHeight = 60
+		'B4XTablePesagem.HeadersHeight = 60
+		Dim xui As XUI
+		B4XTablePesagem.HeaderFont = xui.CreateDefaultBoldFont(10)
+		B4XTablePesagem.LabelsFont = xui.CreateDefaultFont(8)
+		
+		
+		' Resumables
+		Clock(True)
+		GetOPselecionada(True)
+		GetReceita(True)
+		ButtonOP0.Color = Colors.Red
+		ButtonOP1.Color = Colors.Green
+		ButtonOP2.Color = Colors.Red
+		ButtonOP3.Color = Colors.Red
+		ButtonOP4.Color = Colors.Red
+		OPSelecionadaButton = 1
+		LabelFuncaoBomba.Color = Colors.Red
+		StatusBomba = False
+		
+		'Rota
+		ButtonRota1.Color = Colors.Green
+		ButtonRota2.Color = Colors.Red
+		RotaSelcionada = 1
+		
+		'URL = "http://192.168.15.62:4000/WSWrongAdditionSU.asmx"
+		'URL = "http://192.168.15.59:4000/WSWrongAdditionSU.asmx"
+		URL = "http://10.0.2.30:4000/WSWrongAdditionSU.asmx"		'Unilever Vinhedo
+		'URL = "http://10.0.2.129:4000/WSWrongAdditionSU.asmx"		'Unilever Vinhedo
+		'URL = "http://192.168.137.1:4000/WSWrongAdditionSU.asmx"	'Hot Spot
+		CFG_Prefixos
+	Catch LastException
+		Log(LastException)
+		ToastMessageShow(LastException,False)
+		'ListViewAvisos.AddSingleLine(LastException& DateTime.Time(DateTime.Now))
+	End Try
+End Sub
+
+Sub Activity_Resume
+	Clock(True)
+	GetOPselecionada(True)
+	GetReceita(False)
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	Do While UserClosed = True
+		Sleep(1000)
+		Clock(False)
+		GetOPselecionada(False)
+		GetReceita(False)
+	Loop
+End Sub
+
+' Relógio
+Private Sub Clock (state As Boolean)
+	Do While state = True
+		LabelClockTV.Text  = DateTime.Time(DateTime.Now)
+		Sleep(500)
+	Loop
+End Sub
+
+
+Private Sub CFG_Prefixos ()
+	Select OPSelecionadaButton
+		Case 1
+			Prefix_Bomba = "MBO401_"
+			Prefix_Balanca = "WT401_"
+			Prefix_CLP = "RC401_"
+		Case 2
+			Prefix_Bomba = "MBO402_"
+			Prefix_Balanca = "WT402_"
+			Prefix_CLP = "RC402_"
+		Case 3
+			Prefix_Bomba = "MBO403_"
+			Prefix_Balanca = "WT403_"
+			Prefix_CLP = "RC403_"
+		Case 4
+			Prefix_Bomba = "MBO404_"
+			Prefix_Balanca = "WT404_"
+			Prefix_CLP = "RC404_"
+	End Select
+End Sub
+
+' Pesagem
+Private Sub GetOPselecionada(state As Boolean)
+	Try
+		Do While state = True
+			Dim Result As String
+			Dim JobOP As HttpJob
+			Dim XMLWork2 As String = ""
+			Dim XML As String = ""
+			'URL = AddressWebservice.Trim
+
+			XML = "<?xml version='1.0' encoding='utf-8'?>"
+			XML = XML & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+			XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+			XML = XML & "xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+			XML = XML & "<soap12:Body>"
+			XML = XML & "<GetOPSelecionada xmlns='http://www.aplipack.com.br/'>"
+			XML = XML & "<UserSoftware>user</UserSoftware>"
+			XML = XML & "<PasswordSoftware>1234</PasswordSoftware>"
+			XML = XML & "<Settore>" & OPSelecionadaButton & "</Settore>"
+			XML = XML & "</GetOPSelecionada>"
+			XML = XML & "</soap12:Body>"
+			XML = XML & "</soap12:Envelope>"
+
+			JobOP.Initialize("JOBSOAPOP", Me)
+			JobOP.PostString(URL.Trim,XML)
+			JobOP.GetRequest.SetContentType("text/xml")
+			Wait For (JobOP) JobDone
+			'Sleep(500)
+			
+			If JobOP.Success = True Then
+				XMLWork2 = JobOP.GetString
+				XMLWork2 = XMLWork2.Replace("&lt;","<")
+				XMLWork2 = XMLWork2.Replace("&gt;",">")
+				'Sleep(500)
+				JobOP.Release
+				
+				Result = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				
+				If Result = "sucesso" Then
+					IdOrdemProdListCompare = IdOrdemProdList
+					IdOrdemProdList = XMLWork2.SubString2(XMLWork2.IndexOf("<IDOrdemProd>") + 13,XMLWork2.IndexOf("</IDOrdemProd>"))
+					If IdOrdemProdList == IdOrdemProdListCompare Then
+						GetListaOP
+					Else
+						'Sleep(200)
+					End If
+				End If
+			End If
+		Loop
+	Catch LastException
+		Log(LastException)
+		ToastMessageShow(LastException,"False")
+	End Try
+End Sub
+
+Private Sub GetListaOP
+	Try
+		'Sleep(1000)
+		'URL = AddressWebservice.Trim
+		Dim Result As String
+		Dim Quant As Int
+		Dim Ordens As String
+		Dim OrdemProd As String
+		Dim JobOP As HttpJob
+		Dim XML As String 
+		Dim obj As Object
+		
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+		XML = XML & "<soap:Body>"
+		XML = XML & "<GetOrdensAbertasP xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<UserSoftware>user</UserSoftware>"
+		XML = XML & "<PasswordSoftware>1234</PasswordSoftware>"
+		XML = XML & "<StatusOP>2</StatusOP>"
+		XML = XML & "</GetOrdensAbertasP>"
+		XML = XML & "</soap:Body>"
+		XML = XML & "</soap:Envelope>"
+
+		JobOP.Initialize("JOBSOAP0", Me)
+		JobOP.PostString(URL.Trim,XML)
+		JobOP.GetRequest.SetContentType("text/xml")
+		Wait For (JobOP) JobDone
+		Sleep(200)
+
+		If JobOP.Success = True Then
+			XMLWork = JobOP.GetString
+			XMLWork = XMLWork.Replace("&lt;","<")
+			XMLWork = XMLWork.Replace("&gt;",">")
+			XMLWork = XMLWork.Replace("&amp;","-")
+			
+			'Sleep(500)
+			JobOP.Release
+			If XMLWork.Contains("<GetOrdensAbertasPResult>") = True Then
+				Result = XMLWork.SubString2(XMLWork.IndexOf("<Erro>")+6,XMLWork.IndexOf("</Erro>"))
+				Quant = XMLWork.SubString2(XMLWork.IndexOf("<Quantidade>")+12,XMLWork.IndexOf("</Quantidade>"))
+				
+				If Result = "sucesso" Then
+					
+					Dim b As Bitmap
+					b.InitializeResize(File.DirAssets,"data_ok.png","24","24",True)
+
+					Dim c As Bitmap
+					c.InitializeResize(File.DirAssets,"data.png","24","24",True)
+					
+					ListViewOP.Clear
+					ListViewOP.TwoLinesLayout.ItemHeight = 45dip		'70dip
+					ListViewOP.TwoLinesLayout.SecondLabel.TextColor = Colors.Black
+					ListViewOP.TwoLinesLayout.SecondLabel.TextSize = 8		'18
+					ListViewOP.TwoLinesLayout.Label.TextSize = 8	'18
+					ListViewOP.TwoLinesLayout.Label.TextColor = Colors.Black
+					ListViewOP.TwoLinesAndBitmap.Label.TextSize = 8
+					ListViewOP.TwoLinesAndBitmap.SecondLabel.TextSize = 8
+					
+					
+					If Quant > 0 Then
+						Ordens = XMLWork.SubString2(XMLWork.IndexOf("<Ordens>")+8,XMLWork.IndexOf("</Ordens>"))
+						OrdemProd = Ordens.SubString2(Ordens.IndexOf("<OrdemProducao>")+15,Ordens.IndexOf("</OrdemProducao>"))
+						
+						For j=0 To Quant-1
+							OrdemProd =  Ordens.SubString2(Ordens.IndexOf("<OrdemProducao>")+15,Ordens.IndexOf("</OrdemProducao>"))
+							Dim StatusOP As String = OrdemProd.SubString2(OrdemProd.IndexOf("<StatusOP>")+10,OrdemProd.IndexOf("</StatusOP>"))
+							Dim IdOrdemProd As String = OrdemProd.SubString2(OrdemProd.IndexOf("<IdOrdemProd>")+13,OrdemProd.IndexOf("</IdOrdemProd>"))
+							Dim OrdemProduc As String = OrdemProd.SubString2(OrdemProd.IndexOf("<OrdemProd>")+11,OrdemProd.IndexOf("</OrdemProd>"))
+							Dim DescricaoCUC As String = OrdemProd.SubString2(OrdemProd.IndexOf("<DescricaoCUC>")+14,OrdemProd.IndexOf("</DescricaoCUC>"))
+							Dim DataHoraSAP As String = OrdemProd.SubString2(OrdemProd.IndexOf("<dataHoraSAP>")+13,OrdemProd.IndexOf("</dataHoraSAP>"))
+							Dim SetorSelec As Int = OrdemProd.SubString2(OrdemProd.IndexOf("<SetorSelec>")+12,OrdemProd.IndexOf("</SetorSelec>"))
+							
+							DataHoraSAP = DataHoraSAP.SubString2(0,9)
+							DataHoraSAP = DataHoraSAP.SubString(8) & "/" & DataHoraSAP.SubString2(5,7) & "/" & DataHoraSAP.SubString2(0,4)
+							
+							If StatusOP = "2" Then
+								If SetorSelec = OPSelecionadaButton Then
+									If SetorSelec = OPSelecionadaButton Then
+										'ListViewOP.Color = 
+										ListViewOP.AddTwoLines2("OP " & OrdemProduc & " | Data:" & DataHoraSAP, DescricaoCUC & " - " & IdOrdemProd, IdOrdemProd)
+										'ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,b,IdOrdemProd)
+									Else
+										ListViewOP.AddTwoLines2("OP " & OrdemProduc & " | Data:" & DataHoraSAP, DescricaoCUC & " - " & IdOrdemProd, IdOrdemProd)
+										'ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,c,IdOrdemProd)
+									End If
+								Else
+									ListViewOP.AddTwoLines2("OP " & OrdemProduc & " | Data:" & DataHoraSAP, DescricaoCUC & " - " & IdOrdemProd, IdOrdemProd)
+									'ListViewOP.AddTwoLinesAndBitmap2("OP " & OrdemProduc & " | Data:" & DataHoraSAP,DescricaoCUC,c,IdOrdemProd)
+								End If
+							End If
+							
+							If  j < Quant-1 Then
+								Ordens = Ordens.SubString(Ordens.IndexOf("</OrdemProducao>")+16)
+							End If
+						Next
+						
+						For i=0 To ListViewOP.Size-1
+							Dim Value As String = ListViewOP.GetItem(i)
+							If IdOrdemProdList == Value Then
+								'Sleep(4000)
+								ListViewOP.SetSelection(i)
+								Exit
+							End If
+						Next
+					End If
+				End If
+			End If
+		End If
+	Catch LastException
+		Log(LastException)
+		ToastMessageShow(LastException,False)
+		'ListViewAvisos.AddSingleLine("Erro ao carregar OPs. " & DateTime.Time(DateTime.Now))
+	End Try
+End Sub
+
+Sub B4XTablePesagem_DataUpdated
+'	Dim ShouldRefresh As Boolean
+'	Private NameColumn As B4XTableColumn
+'	Private NumberColumn As Int
+'	Private cvs As B4XCanvas
+'
+'	NameColumn = B4XTablePesagem.AddColumn("Material",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	B4XTablePesagem.AddColumn("Unidade", B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	B4XTablePesagem.AddColumn("P. Requerido", B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	B4XTablePesagem.AddColumn("Rota 1",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	B4XTablePesagem.AddColumn("Rota 2",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	B4XTablePesagem.AddColumn("Bomba",B4XTablePesagem.COLUMN_TYPE_TEXT)
+'	
+'	'NameColumn and NumberColumn are global B4XTableColumns that we want to measure
+'	For Each column As B4XTableColumn In Array(NameColumn, NumberColumn)
+'		Dim MaxWidth As Int
+'		For i = 0 To B4XTablePesagem.VisibleRowIds.Size - 1
+'			Dim RowId As Long = B4XTablePesagem.VisibleRowIds.Get(i)
+'			If RowId > 0 Then
+'				Dim pnl As B4XView = column.CellsLayouts.Get(i + 1)
+'				Dim lbl As B4XView = pnl.GetView(0)
+'				Dim txt As String = B4XTablePesagem.GetRow(RowId).Get(column.Id)
+'				MaxWidth = Max(MaxWidth, cvs.MeasureText(txt, lbl.Font).Width + 10dip)
+'			End If
+'		Next
+'		
+'		If MaxWidth > column.ComputedWidth Or MaxWidth < column.ComputedWidth - 20dip Then
+'			column.Width = MaxWidth
+'			ShouldRefresh = True
+'		End If
+'	Next
+'	If ShouldRefresh Then
+'		B4XTablePesagem.Refresh
+'	End If
+End Sub
+
+
+Private Sub GetReceita(state As Boolean)
+	Try
+		Do While state = True
+			'Sleep(1000)
+			'URL = AddressWebservice.Trim
+			Dim XML As String
+			Dim JobReceita As HttpJob
+			Dim XMLWorkReceita As String = ""
+			
+			XML = "<?xml version='1.0' encoding='utf-8'?>"
+			XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+			XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+			XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+			XML = XML & "<soap:Body>"
+			XML = XML & "<GetReceita xmlns='http://www.aplipack.com.br/'>"
+			XML = XML & "<UserSoftware>user</UserSoftware>"
+			XML = XML & "<PasswordSoftware>1234</PasswordSoftware>"
+			XML = XML & "<IdOrdemProducaoSAP>" & IdOrdemProdList & "</IdOrdemProducaoSAP>"
+			XML = XML & "<Settore>" & NomeTerminal & "</Settore>"
+			XML = XML & "</GetReceita>"
+			XML = XML & "</soap:Body>"
+			XML = XML & "</soap:Envelope>"
+
+			JobReceita.Initialize("JOBSOAPReceita", Me)
+			JobReceita.PostString(URL.Trim,XML)
+			JobReceita.GetRequest.SetContentType("text/xml")
+			Wait For (JobReceita) JobDone
+			'Sleep(200)
+
+			If JobReceita.Success = True Then
+				Dim l As List
+				l.Initialize
+				XMLWorkReceita = JobReceita.GetString
+				XMLWorkReceita = XMLWorkReceita.Replace("&lt;","<")
+				XMLWorkReceita = XMLWorkReceita.Replace("&gt;",">")
+				'Sleep(200)
+				JobReceita.Release
+				
+				If XMLWorkReceita.Contains("<GetReceitaResult>") = True Then
+					Dim Result As String = XMLWorkReceita.SubString2(XMLWorkReceita.IndexOf("<Erro>")+6,XMLWorkReceita.IndexOf("</Erro>"))
+					Dim Quant As Int = XMLWorkReceita.SubString2(XMLWorkReceita.IndexOf("<Quantidade>")+12,XMLWorkReceita.IndexOf("</Quantidade>"))
+					
+					If Result = "sucesso" Then
+						Dim Receita As String =  XMLWorkReceita.SubString2(XMLWorkReceita.IndexOf("<Receitas>")+9,XMLWorkReceita.IndexOf("</Receitas>"))
+
+						LabelPesgaemTTitulo.Text = "CUC/Material: " & IdOrdemProdList
+
+						If Quant > 0 Then
+							Dim ItemReceita As String =  Receita.SubString2(Receita.IndexOf("<ItemReceita>")+13,Receita.IndexOf("</ItemReceita>"))
+							For j=0 To Quant-1
+								If Receita.Contains("<ItemReceita>") = True Then
+									ItemReceita =  Receita.SubString2(Receita.IndexOf("<ItemReceita>")+13,Receita.IndexOf("</ItemReceita>"))
+								End If
+								
+								Dim CodigoMaterial As String = ItemReceita.SubString2(ItemReceita.IndexOf("<CodigoMaterial>")+16,ItemReceita.IndexOf("</CodigoMaterial>"))
+								Dim DescricaoMaterial As String = ItemReceita.SubString2(ItemReceita.IndexOf("<DescricaoMaterial>")+19,ItemReceita.IndexOf("</DescricaoMaterial>"))
+								Dim PesoReceita As Float = ItemReceita.SubString2(ItemReceita.IndexOf("<PesoReceita>")+13,ItemReceita.IndexOf("</PesoReceita>"))
+								Dim PesoRota1 As Float = ItemReceita.SubString2(ItemReceita.IndexOf("<PesoRota1>")+11,ItemReceita.IndexOf("</PesoRota1>"))
+								Dim PesoRota2 As Float = ItemReceita.SubString2(ItemReceita.IndexOf("<PesoRota2>")+11,ItemReceita.IndexOf("</PesoRota2>"))
+								'Dim ValorPesoPesado As String = ItemReceita.SubString2(ItemReceita.IndexOf("<ValorPesoPesado>")+17,ItemReceita.IndexOf("</ValorPesoPesado>"))
+								'Dim PesoPorEmbalagem As Float = ItemReceita.SubString2(ItemReceita.IndexOf("<PesoPorEmbalagem>")+18,ItemReceita.IndexOf("</PesoPorEmbalagem>"))
+								Dim Bomba As String = ItemReceita.SubString2(ItemReceita.IndexOf("<IdBomba>")+9,ItemReceita.IndexOf("</IdBomba>"))
+								
+								If Bomba = "0" Then
+									Bomba = "Não vinculado."
+								End If
+								
+								If ItemReceita.Contains("<UnidadePeso>") Then
+									Dim Unidade As String = ItemReceita.SubString2(ItemReceita.IndexOf("<UnidadePeso>")+13,ItemReceita.IndexOf("</UnidadePeso>"))
+								End If
+								
+								'If Unidade = " KG" Then
+									'PesoReceita = PesoReceita / 1000
+									'PesoRota1 = PesoRota1 / 1000
+									'PesoRota2 = PesoRota2 / 1000
+									'PesoPorEmbalagem = PesoPorEmbalagem / 1000
+								'End If
+								
+								l.Add(Array(CodigoMaterial & " - " & DescricaoMaterial, Unidade, NumberFormat(PesoReceita, 1, 3), NumberFormat(PesoRota1, 1,3), NumberFormat(PesoRota2,1,3), Bomba))
+								If j < Quant And Receita.Contains("<ItemReceita>") = True Then
+									Receita = Receita.SubString(Receita.IndexOf("</ItemReceita>")+14)
+								End If
+								
+								For i=0 To ListViewOP.Size-1
+									Dim Value As String = ListViewOP.GetItem(i)
+									If IdOrdemProdList == Value Then
+										ListViewOP.SetSelection(i)
+									End If
+								Next
+							Next
+						Else
+							l.Clear
+						End If
+						
+						B4XTablePesagem.SetData(l)
+						col1.Width = 400
+						col2.Width = 200
+						col3.Width = 200
+						col4.Width = 150
+						col5.Width = 150
+						col6.Width = 150
+						
+						
+						B4XTablePesagem.Refresh
+					End If
+				End If
+			End If
+		Loop
+	Catch LastException
+		Log(LastException)
+		ToastMessageShow(LastException,False)
+	End Try
+End Sub
+
+
+'Clique na linha de produtos
+Sub B4XTablePesagem_CellClicked (ColumnId As String, RowId As Long)
+	Dim RowData As Map = B4XTablePesagem.GetRow(RowId)
+	'Pega o Produto
+	Dim Produto As String = RowData.Get("Material")
+	'Pega o Peso
+	'Dim Peso As String = RowData.Get("P. Requerido")
+	Peso = RowData.Get("P. Requerido")
+	Peso = Peso.Replace(",","")
+	'Pega a bomba selecionada
+	Dim Bomba As String = RowData.Get("Bomba")
+	
+	If Bomba = "Não vinculado." Then
+		ToastMessageShow("Produto não vinculado a uma bomba. Verifique",True)
+		Return
+	End If
+	
+	'Current_BombaID = Prefix_Bomba & NumberFormat(Bomba.Trim,3,0)
+	Current_BombaID = Prefix_Bomba & "003"
+	Current_BombaID = "MBO403_003"
+	
+	Dim Mensagem As String
+	Mensagem = "Deseja iniciar o processo de pesagem do produto "  & CRLF 
+	Mensagem = Mensagem & Produto & " ,pesando " & Peso.Trim & "g na bomba " & Bomba.Trim
+	
+	Dim i As Int
+	i = Msgbox2(Mensagem, "Confirmar inicio da pesagem", "Sim", "Cancela", "Não", Null)
+	Select i
+		Case DialogResponse.POSITIVE 'Edit
+			'Verificar se usuário esta logado
+			
+			'Verificar o status da bomba
+			
+			'Verificar o status da balança
+			
+			ToastMessageShow("Confirmou",False)
+			PanelPesagem2.Visible = True
+			EditTextPesoRequerido.Text = Peso
+
+			'StartDosagem(Current_BombaID, Peso)
+		
+		Case DialogResponse.CANCEL 'Cancel
+			ToastMessageShow("Operação cancelada.",False)
+		Case DialogResponse.NEGATIVE 'Delete
+			ToastMessageShow("Operação cancelada.",False)
+	End Select
+End Sub
+
+'Sub B4XTablePesagem_DataUpdated
+'	Try
+'		For Each column As B4XTableColumn In B4XTablePesagem.Columns
+'			If column.ID == "Material" Then
+'				column.Width = 139
+'			Else
+'				column.Width = 120
+'				column.DisableAutoResizeLayout = False
+'			End If
+'		Next
+'	Catch
+'		ToastMessageShow("Erro ao gravar",False)
+''		ToastMessageShow(LastException,False)
+'	End Try
+'End Sub
+
+Sub ImageViewAplipack_Click
+	PanelLogin.Visible = True
+	PanelMain.Visible = False
+End Sub
+
+' Settings
+Sub ButtonVoltar_Click
+	PanelMain.Visible = True
+	PanelSettings.Visible = False
+End Sub
+
+Sub ButtonLimpar_Click
+	EditTextLinha.Text = ""
+	EditTextWebservice.Text = ""
+End Sub
+
+Sub ButtonGravar_Click
+	Try
+		sql1.ExecNonQuery("UPDATE Data SET  NomeTerminal ='" & EditTextLinha.Text & "', EnderecoWebservice='" & EditTextWebservice.Text & "' WHERE id=1;")
+		cursor = sql1.ExecQuery("SELECT NomeTerminal, EnderecoWebservice FROM Data WHERE id=1;")
+		cursor.Position =  0
+		NomeTerminal = cursor.GetString2(0)
+		AddressWebservice = cursor.GetString2(1)
+	Catch
+		Log(LastException)
+		ToastMessageShow("Erro ao gravar",False)
+		'ToastMessageShow(LastException,False)
+	End Try
+End Sub
+
+' Login
+
+Sub ButtonVoltarLogin_Click
+	PanelMain.Visible = True
+	PanelLogin.Visible = False
+End Sub
+
+Sub ButtonLogin_Click
+	Try
+		'Dim pass As String =  GeneratePassword
+		If EditTextUsuarioLogin.Text = "admin" And EditTextSenhaLogin.Text = "passwordfrota" Then
+			PanelLogin.Visible = False
+			PanelSettings.Visible = True
+			EditTextWebservice.Text = AddressWebservice
+			EditTextLinha.Text = NomeTerminal
+			EditTextUsuarioLogin.Text = ""
+			EditTextSenhaLogin.Text = ""
+		Else
+			ToastMessageShow("Senha ou usuario não são corretos.",False)
+		End If
+	Catch
+		Log(LastException)
+		ToastMessageShow("Erro ao fazer Login.",False)
+		'ListViewAvisos.AddSingleLine(LastException& DateTime.Time(DateTime.Now))
+	End Try
+End Sub
+
+'Private Sub GeneratePassword As String
+'	Try
+'		Dim passwordHour As Int = DateTime.GetHour(DateTime.Now)
+'		passwordHour = passwordHour * 3
+'		Dim passwordMinute As Int = DateTime.GetMinute(DateTime.Now)
+'		passwordMinute = passwordMinute *2
+'		Dim password As String = passwordHour
+'		Dim password2 As String =  passwordMinute
+'		If password2.Length = 1 Then
+'			password2 = "0" & password2
+'		Else If password2.Length >= 3 Then
+'			password2 = password2.SubString2(0,2)
+'		End If
+'		Return password & password2
+'	Catch LastException
+'		ToastMessageShow("Erro ao gerar senha.",False)
+'		Return '
+'	End Try
+'End Sub
+
+Sub ButtonLimparLogin_Click
+	EditTextUsuarioLogin.Text = ""
+	EditTextSenhaLogin.Text = ""
+End Sub
+
+Private Sub ListViewOP_ItemClick (Position As Int, Value As Object)
+	Try
+		'Dim URL As String
+		'URL = AddressWebservice
+		Dim XMLWork2 As String
+		Dim OPSelecionada As Int = Value
+		Dim JobOP2 As HttpJob
+
+		Dim XML As String 
+		
+		XML = "<?xml version='1.0' encoding='utf-8'?>"
+		XML = XML & "<soap:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+		XML = XML & "xmlns:xsd='http://www.w3.org/2001/XMLSchema' "
+		XML = XML & "xmlns:soap='http://www.w3.org/2003/05/soap-envelope'>"
+		XML = XML & "<soap:Body>"
+		XML = XML & "<SelecionaOP xmlns='http://www.aplipack.com.br/'>"
+		XML = XML & "<UserSoftware>user</UserSoftware>"
+		XML = XML & "<PasswordSoftware>1234</PasswordSoftware>"
+		XML = XML & "<Settore>" & OPSelecionadaButton & "</Settore>"
+		XML = XML & "<IdOrdemProd>" & OPSelecionada & "</IdOrdemProd>"
+		XML = XML & "</SelecionaOP>"
+		XML = XML & "</soap:Body>"
+		XML = XML & "</soap:Envelope>"
+
+		JobOP2.Initialize("JOBSOAP", Me)
+		JobOP2.PostString(URL,XML.Trim)
+		JobOP2.GetRequest.SetContentType("text/xml")
+		Wait For (JobOP2) JobDone
+		'Sleep(100)
+
+		If JobOP2.Success = True Then
+			XMLWork2 = JobOP2.GetString
+			XMLWork2 = XMLWork2.Replace("&lt;","<")
+			XMLWork2 = XMLWork2.Replace("&gt;",">")
+			XMLWork2 = XMLWork2.Replace("&amp;","-")
+			
+			If XMLWork2.Contains("<SelecionaOPResult>") = True Then
+				Dim Result As String = XMLWork2.SubString2(XMLWork2.IndexOf("<Erro>")+6,XMLWork2.IndexOf("</Erro>"))
+				If Result = "sucesso" Then
+					ToastMessageShow("OP selecionada com sucesso.",False)
+					LabelPesgaemTTitulo.Text = "CUC/Material: " & OPSelecionada
+				Else
+					ToastMessageShow("Falha ao selecionar OP, tente novamente.", False)
+				End If
+			End If
+		End If
+		JobOP2.Release
+	Catch LastException
+		Log(LastException)
+		ToastMessageShow("Erro ao enviar OP selecionada.", False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+Private Sub ButtonOP4_Click
+	ButtonOP0.Color = Colors.Red
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Green
+	OPSelecionadaButton = 4
+	CFG_Prefixos
+End Sub
+
+Private Sub ButtonOP3_Click
+	ButtonOP0.Color = Colors.Red
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Green
+	ButtonOP4.Color = Colors.Red
+	OPSelecionadaButton = 3
+	CFG_Prefixos
+End Sub
+
+Private Sub ButtonOP2_Click
+	ButtonOP0.Color = Colors.Red
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Green
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	OPSelecionadaButton = 2
+	CFG_Prefixos
+End Sub
+
+Private Sub ButtonOP1_Click
+	ButtonOP0.Color = Colors.Red
+	ButtonOP1.Color = Colors.Green
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	OPSelecionadaButton = 1
+	CFG_Prefixos
+End Sub
+
+Private Sub ButtonOP0_Click
+	ButtonOP0.Color = Colors.Green
+	ButtonOP1.Color = Colors.Red
+	ButtonOP2.Color = Colors.Red
+	ButtonOP3.Color = Colors.Red
+	ButtonOP4.Color = Colors.Red
+	OPSelecionadaButton = 0
+	CFG_Prefixos
+End Sub
+
+Private Sub EditTextBarcode_EnterPressed
+	If EditTextBarcode.Text.Contains("|") = True Then
+		idSSCC = EditTextBarcode.Text.SubString2(0,9)
+		idProduto =  EditTextBarcode.Text.SubString2(10,18)
+		SSCC =  EditTextBarcode.Text.SubString(19)
+		PanelPesagem2.Visible = True
+		PanelMain.Visible = False
+	End If
+End Sub
+
+Private Sub ButtonClearBarcode_Click
+	EditTextBarcode.Text = ""
+End Sub
+
+Private Sub ButtonBarcodeScan_Click
+	myABBarcode.ABGetBarcode("myABBarcode","")
+End Sub
+
+Sub myABBarcode_BarcodeFound (Barcode As String, formatName As String)
+	'000010007|00001232|000000032507361100
+	Try
+		If formatName="QR_CODE" And Barcode.Contains("|") = True Then
+			idSSCC = Barcode.SubString2(0,9)
+			idProduto =  Barcode.SubString2(10,18)
+			SSCC =  Barcode.SubString(19)
+			PanelPesagem2.Visible = True
+			PanelMain.Visible = False
+		End If
+	Catch
+		Log(LastException)
+		ToastMessageShow("Erro ao processar código.",False)
+		'ToastMessageShow(LastException& DateTime.Time(DateTime.Now),False)
+	End Try
+End Sub
+
+Private Sub ButtonRota1_Click
+	ButtonRota1.Color = Colors.Green
+	ButtonRota2.Color = Colors.Red
+	RotaSelcionada = 1
+	ToastMessageShow("Selecionada a ROTA 1.",False)
+End Sub
+
+Private Sub ButtonRota2_Click
+	ButtonRota1.Color = Colors.Red
+	ButtonRota2.Color = Colors.Green
+	RotaSelcionada = 2
+	ToastMessageShow("Selecionada a ROTA 2.",False)
+End Sub
+
+Private Sub ButtonLigarBomba_Click
+	LabelFuncaoBomba.Color = Colors.Green
+	
+	'Verificar o status da bomba
+	
+	'Fazer o setpoint do peso
+	
+	'Enviar o start da bomba
+	
+	Try
+		FinalizadoDosagem = False
+		
+		StartDosagem(Current_BombaID, Peso)
+		'StatusBomba = True
+		'ToastMessageShow("Dosagem iniciada.",False)
+		
+		Clock_VerificaFimDosagem(True)
+		
+	
+	Catch
+		Log(LastException)
+		ToastMessageShow("ERRO ao iniciar o processo de dosagem. Verifique.", True)
+	End Try
+	
+	'Aguardar o retorno do final da pesagem
+End Sub
+
+Private Sub ButtonDesligarBomba_Click
+	Dim XML_BombaStart As String
+	
+	XML_BombaStart = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaStart = XML_BombaStart & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaStart = XML_BombaStart & "<soap12:Body>"
+	XML_BombaStart = XML_BombaStart & "<Bomba_SetStartDosagem  xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_BombaStart = XML_BombaStart & "<UserSoftware>user</UserSoftware>"
+	XML_BombaStart = XML_BombaStart & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaStart = XML_BombaStart & "<BombaTag>" & Current_BombaID & "</BombaTag>"
+	XML_BombaStart = XML_BombaStart & "<start>false</start>"
+	XML_BombaStart = XML_BombaStart & "</Bomba_SetStartDosagem >"
+	XML_BombaStart = XML_BombaStart & "</soap12:Body>"
+	XML_BombaStart = XML_BombaStart & "</soap12:Envelope>"
+
+	LabelFuncaoBomba.Color = Colors.Red
+	'Verificar o status da bomba
+	
+	'Enviar o stop da bomba
+	
+	StatusBomba = False
+	ToastMessageShow("Dosagem cancelada.",False)
+End Sub
+
+Private Sub ButtonConcluirPesagem_Click
+	'Verificar o status da bomba
+	
+	'Enviar o stop da bomba
+
+	'Registrar informações
+	
+	'Imprimir etiqueta
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@barcode@", Format(xIdPesagem, "0000000000"))
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@peso@", Format(wEmbalagem, "N3"))
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("Peso KG", wUnidade)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("10000000000000000001", Mid(vLote, vLote.Length - 9))
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@codmaterial@", vCodigoMaterial)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@batch@", Format(vTamanhoBatch, "N3"))
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@ordemprod@", vORdemProd)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@descris@", LblDescMaterial.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@phys@", LblPhysicalH.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@dataprod@", LblDataProd.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@validade@", LblValidade.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@flam@", LblFlam.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@terminal@", vTerminal)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@balanca@", vNomeBalanca)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@user@", vUtente)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@health@", LblHealth.Text)
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("@data@", Format(Now, "G"))
+'	ZPLEtiqueta = ZPLEtiqueta.Replace("21111112", LblMaterial.Text)
+	
+	ImprimeZebra(ZPLEtiqueta, ImpressoraIP, ImpressoraPorta)
+
+	ToastMessageShow("Pesagem concluída.",False)
+
+	'Voltar para formulario principal		
+	PanelMain.Visible = True
+	PanelPesagem2.Visible = False
+End Sub
+
+Private Sub ButtonCancelarPesagem_Click
+	
+End Sub
+
+Private Sub ButtonVoltarPesagem_Click
+	PanelMain.Visible = True
+	PanelPesagem2.Visible = False
+End Sub
+
+Sub JobDone (Job As HttpJob)
+	
+End Sub
+
+Private Sub VerificaBomba(BombaID As String)
+	
+	Dim xxStringa As String
+	Dim JobBomba As HttpJob
+	
+	XML_BombaStatus = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaStatus = XML_BombaStatus & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaStatus = XML_BombaStatus & "<soap12:Body>"
+	XML_BombaStatus = XML_BombaStatus & "<Bomba_GetStatus xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>user</UserSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<BombaTag>" & BombaID & "</BombaTag>"
+	XML_BombaStatus = XML_BombaStatus & "</Bomba_GetStatus>"
+	XML_BombaStatus = XML_BombaStatus & "</soap12:Body>"
+	XML_BombaStatus = XML_BombaStatus & "</soap12:Envelope>"
+
+	retorno_Bomba = False
+	
+	Current_BombaID = ""
+	
+	Try
+		VerificaBalanca("AA")
+		If retornoBalancaStatus = False Then
+			Return
+		End If
+		
+		JobBomba.Initialize("JOBSOAP", Me)
+		JobBomba.PostString(URL, XML_BombaStatus)
+		JobBomba.GetRequest.SetContentType("text/xml")
+		WaiT For (JobBomba) JobDone
+		Sleep(100)
+		XMLWork = JobBomba.GetString
+		XMLWork = XMLWork.Replace("&lt;","<")
+		XMLWork = XMLWork.Replace("&gt;",">")
+	
+		xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+		xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+
+		If xxStringa.Trim() = "11" Then
+			'Bomba OK - Aguardando solicitação - Iniciar SetPoint
+			ToastMessageShow(xErro,True)
+			retorno_Bomba = True
+			Current_BombaID = BombaID
+		Else
+			retorno_Bomba = False
+			ToastMessageShow(xErro,True)
+		End If
+		LabelFuncaoBomba.Text = xErro
+	Catch
+		Log(LastException)
+		ToastMessageShow("Ocorreu um erro ao tentar obter o status da bomba. Verifique.",True)
+		LabelFuncaoBomba.Text = xErro
+		retorno_Bomba = False
+	End Try
+	
+	Return
+
+End Sub
+
+Private Sub StartDosagem(BombaID As String, PesoDosagem As Int)
+	
+	'Obter o status da bomba
+	'Se bomba OK, fazer o setpoint do peso e iniciar a dosagem
+	'Se bomba NÃO OK, informar o usuário
+
+	Dim xxStringa As String
+	Dim JobBomba As HttpJob
+	Dim JobBomba2 As HttpJob
+	Dim JobBomba3 As HttpJob
+	Dim XML_BombaStatus As String
+	Dim XML_BombaSetPoint As String
+	Dim XML_BombaStart As String
+	
+	Dim BombaStart As String = "true"
+	Dim retorno As Boolean = True
+
+'	If (EditTextUser.Text.Trim() = ') Or (EditTextPassword.Text.Trim() = ') Or (BombaID.Trim()  = ') Or (PesoDosagem <= 0) Then
+'		LblMSG.Text = "Parâmetros para uso do web service incorretos ou faltantes. Verifique"
+'		Return
+'	End If
+	
+	XML_BombaStatus = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaStatus = XML_BombaStatus & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaStatus = XML_BombaStatus & "<soap12:Body>"
+	XML_BombaStatus = XML_BombaStatus & "<Bomba_GetStatus xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>user</UserSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaStatus = XML_BombaStatus & "<BombaTag>" & BombaID & "</BombaTag>"
+	XML_BombaStatus = XML_BombaStatus & "</Bomba_GetStatus>"
+	XML_BombaStatus = XML_BombaStatus & "</soap12:Body>"
+	XML_BombaStatus = XML_BombaStatus & "</soap12:Envelope>"
+	
+	PesoDosagem = 5000
+	
+	XML_BombaSetPoint = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<soap12:Body>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<Bomba_SetPoint  xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<UserSoftware>user</UserSoftware>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<BombaTag>" & BombaID & "</BombaTag>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "<qtdeDosagem>" & PesoDosagem & "</qtdeDosagem>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "</Bomba_SetPoint >"
+	XML_BombaSetPoint = XML_BombaSetPoint & "</soap12:Body>"
+	XML_BombaSetPoint = XML_BombaSetPoint & "</soap12:Envelope>"
+	
+	XML_BombaStart = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaStart = XML_BombaStart & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaStart = XML_BombaStart & "<soap12:Body>"
+	XML_BombaStart = XML_BombaStart & "<Bomba_SetStartDosagem  xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_BombaStart = XML_BombaStart & "<UserSoftware>user</UserSoftware>"
+	XML_BombaStart = XML_BombaStart & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaStart = XML_BombaStart & "<BombaTag>" & BombaID & "</BombaTag>"
+	XML_BombaStart = XML_BombaStart & "<start>" & BombaStart & "</start>"
+	XML_BombaStart = XML_BombaStart & "</Bomba_SetStartDosagem >"
+	XML_BombaStart = XML_BombaStart & "</soap12:Body>"
+	XML_BombaStart = XML_BombaStart & "</soap12:Envelope>"
+
+	Try
+'		VerificaBalanca("AA")
+'		If retornoBalancaStatus = False Then
+'			Return
+'		End If
+		
+		LabelFuncaoBomba.Text = "Iniciando o processo de start da Bomba " & BombaID
+		
+		JobBomba.Initialize("JOBSOAP", Me)
+		JobBomba.PostString(URL, XML_BombaStatus)
+		'JobBomba.PostString(URL, XML_BombaSetPoint)
+		JobBomba.GetRequest.SetContentType("text/xml")
+		WaiT For (JobBomba) JobDone
+		Sleep(100)
+		XMLWork = JobBomba.GetString
+		XMLWork = XMLWork.Replace("&lt;","<")
+		XMLWork = XMLWork.Replace("&gt;",">")
+	
+		xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+		xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+
+		LabelFuncaoBomba.Text = xErro
+
+		If xxStringa.Trim() = "11" Then
+			'Bomba OK - Aguardando solicitação - Iniciar SetPoint
+			'LblMSG.Text = xErro
+			
+			JobBomba2.Initialize("JOBSOAP", Me)
+			JobBomba2.PostString(URL, XML_BombaSetPoint)
+			JobBomba2.GetRequest.SetContentType("text/xml")
+			WaiT For (JobBomba2) JobDone
+			Sleep(100)
+			XMLWork = JobBomba2.GetString
+			XMLWork = XMLWork.Replace("&lt;","<")
+			XMLWork = XMLWork.Replace("&gt;",">")
+	
+			xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+			xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+
+			If xxStringa.Trim() = "0" Then
+				'Peso configurado com sucesso. Iniciar dosagem.
+				'LblMSG.Text = xErro
+
+				JobBomba3.Initialize("JOBSOAP", Me)
+				JobBomba3.PostString(URL, XML_BombaStart)
+				JobBomba3.GetRequest.SetContentType("text/xml")
+				WaiT For (JobBomba3) JobDone
+				Sleep(100)
+				XMLWork = JobBomba3.GetString
+				XMLWork = XMLWork.Replace("&lt;","<")
+				XMLWork = XMLWork.Replace("&gt;",">")
+	
+				xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+				xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+				
+				StatusBomba = False
+				If xxStringa.Trim() = "0" Then
+					StatusBomba = True
+					'Bomba iniciada...aguardando o final da dosagem
+					ToastMessageShow("Bomba " & BombaID & "iniciada...aguardando o final da dosagem (" & PesoDosagem & ").",True)
+					'LblMSG.Text = xErro
+				Else
+					retorno = False
+					ToastMessageShow("Não foi possivel iniciar a dosagem na Bomba " & BombaID & ". Verifique.",True)
+				End If
+
+			Else
+				'LblMSG.Text = xErro
+				retorno = False
+			End If
+		Else
+			'Bomba não preparada
+			'LblMSG.Text = xErro
+			retorno = False
+			LabelFuncaoBomba.Text = xErro
+		End If
+	Catch
+		Log(LastException)
+		LabelFuncaoBomba.Text = LastException.Message
+		'LblMSG.Text = xErro
+		retorno = False
+	End Try
+	
+	Return
+End Sub
+
+Private Sub Clock_VerificaFimDosagem (state As Boolean)
+	Dim XML_Bomba As String
+	Dim xxStringa As String
+	Dim xxstatus As Boolean
+	Dim Job As HttpJob
+	
+	XML_Bomba = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_Bomba = XML_Bomba & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_Bomba = XML_Bomba & "<soap12:Body>"
+	XML_Bomba = XML_Bomba & "<Bomba_GetFinalizadoDosagem xmlns='http://www.aplipack.com.br/'>"
+'	XML_BombaStatus = XML_BombaStatus & "<UserSoftware>" & EditTextUser.Text & "</UserSoftware>"
+'	XML_BombaStatus = XML_BombaStatus & "<PasswordSoftware>" & EditTextPassword.Text & "</PasswordSoftware>"
+	XML_Bomba = XML_Bomba & "<UserSoftware>user</UserSoftware>"
+	XML_Bomba = XML_Bomba & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_Bomba = XML_Bomba & "<BombaTag>" & Current_BombaID & "</BombaTag>"
+	XML_Bomba = XML_Bomba & "</Bomba_GetFinalizadoDosagem>"
+	XML_Bomba = XML_Bomba & "</soap12:Body>"
+	XML_Bomba = XML_Bomba & "</soap12:Envelope>"
+
+	Do While state = True
+		If StatusBomba = True Then
+			Try
+				Job.Initialize("JOBSOAP", Me)
+				Job.PostString(URL, XML_Bomba)
+				Job.GetRequest.SetContentType("text/xml")
+				WaiT For (Job) JobDone
+				Sleep(100)
+				XMLWork = Job.GetString
+				XMLWork = XMLWork.Replace("&lt;","<")
+				XMLWork = XMLWork.Replace("&gt;",">")
+				
+				xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+				xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+				xxstatus = XMLWork.SubString2(XMLWork.IndexOf("<xStatus>")+9,XMLWork.IndexOf("</xStatus>"))
+				
+				If xxstatus = True Then
+					state = False
+					FinalizadoDosagem = True
+					GetPesoDosado(Current_BombaID)
+					
+				End If
+			Catch
+				Log(LastException)
+			End Try
+		End If
+		Sleep(100)
+	Loop
+End Sub
+
+Private Sub GetPesoDosado(BombaTag As String)
+
+	Dim xxStringa As String
+	Dim xxPeso As String
+	Dim JobBomba As HttpJob
+	Dim XML_BombaVDosado As String
+	'Dim retorno As Boolean = False
+	
+	'retornoBalancaStatus = False
+	
+	XML_BombaVDosado = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BombaVDosado = XML_BombaVDosado & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BombaVDosado = XML_BombaVDosado & "<soap12:Body>"
+	XML_BombaVDosado = XML_BombaVDosado & "<Bomba_GetValorDosado xmlns='http://www.aplipack.com.br/'>"
+	XML_BombaVDosado = XML_BombaVDosado & "<UserSoftware>user</UserSoftware>"
+	XML_BombaVDosado = XML_BombaVDosado & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BombaVDosado = XML_BombaVDosado & "<BombaTag>" & BombaTag & "</BombaTag>"
+	XML_BombaVDosado = XML_BombaVDosado & "</Bomba_GetValorDosado>"
+	XML_BombaVDosado = XML_BombaVDosado & "</soap12:Body>"
+	XML_BombaVDosado = XML_BombaVDosado & "</soap12:Envelope>"
+
+	Try
+		JobBomba.Initialize("JOBSOAP", Me)
+		JobBomba.PostString(URL, XML_BombaVDosado)
+		JobBomba.GetRequest.SetContentType("text/xml")
+		WaiT For (JobBomba) JobDone
+		Sleep(100)
+		XMLWork = JobBomba.GetString
+		XMLWork = XMLWork.Replace("&lt;","<")
+		XMLWork = XMLWork.Replace("&gt;",">")
+		
+		xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+		xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+		xxPeso = XMLWork.SubString2(XMLWork.IndexOf("<xValor>")+8,XMLWork.IndexOf("</xValor>"))
+		
+		xxPeso = (xxPeso * 1000)
+
+		ToastMessageShow(xErro,True)
+
+		If xxStringa = "0" Then
+			EditTextPesoBomba.Text = xxPeso
+			habilitaImpressaoETQ = True
+		Else
+			ToastMessageShow("Não foi possível recuperar o valor dosado da Bomba " & Current_BombaID & ". Verifique.",True)
+		End If
+		
+		JobBomba.Release
+
+	Catch
+		Log(LastException)
+		ToastMessageShow("ERRO ao tentar recuperar o valor dosado da Bomba " & Current_BombaID & ". Verifique.",True)
+	End Try
+	
+	'LblMSG.Text = xErro
+End Sub
+
+
+Private Sub VerificaBalanca(BalancaTag As String)
+
+	Dim xxStringa As String
+	Dim JobBalanca As HttpJob
+	Dim XML_BalancaStatus As String
+	'Dim retorno As Boolean = False
+	
+	retornoBalancaStatus = False
+	
+	XML_BalancaStatus = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_BalancaStatus = XML_BalancaStatus & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_BalancaStatus = XML_BalancaStatus & "<soap12:Body>"
+	XML_BalancaStatus = XML_BalancaStatus & "<Balanca_GetStatus xmlns='http://www.aplipack.com.br/'>"
+	XML_BalancaStatus = XML_BalancaStatus & "<UserSoftware>user</UserSoftware>"
+	XML_BalancaStatus = XML_BalancaStatus & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_BalancaStatus = XML_BalancaStatus & "<BalancaTag>" & BalancaTag & "</BalancaTag>"
+	XML_BalancaStatus = XML_BalancaStatus & "</Balanca_GetStatus>"
+	XML_BalancaStatus = XML_BalancaStatus & "</soap12:Body>"
+	XML_BalancaStatus = XML_BalancaStatus & "</soap12:Envelope>"
+
+	Try
+		JobBalanca.Initialize("JOBSOAP", Me)
+		JobBalanca.PostString(URL, XML_BalancaStatus)
+		JobBalanca.GetRequest.SetContentType("text/xml")
+		WaiT For (JobBalanca) JobDone
+		Sleep(100)
+		XMLWork = JobBalanca.GetString
+		XMLWork = XMLWork.Replace("&lt;","<")
+		XMLWork = XMLWork.Replace("&gt;",">")
+		
+		xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+		xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+
+		'CÓD    DESCRIÇÃO
+		'0      ALARME BALANÇA - PROBLEMA GENÉRICO - VER CÓDIGO NA BALANÇA
+		'1      ALARME DE FALTA DE COMUNICAÇÃO
+		'2      BALANÇA TUDO OK
+		'3      BALANÇA NÃO ESTÁ EM ZERO
+		
+		If xxStringa.Trim() = "2" Then
+			retornoBalancaStatus = True
+		End If
+
+	Catch
+		Log(LastException)
+	End Try
+	
+	'LblMSG.Text = xErro
+End Sub
+
+Private Sub ImprimeZebra(eptZPL As String, eptIP As String, eptPorta As Int)
+
+	Dim xxStringa As String
+	Dim JobZebra As HttpJob
+	Dim XML_Zebra As String
+	'Dim retorno As Boolean = False
+	
+	retornoBalancaStatus = False
+	
+	XML_Zebra = "<?xml version='1.0' encoding='utf-8'?>"
+	XML_Zebra = XML_Zebra & "<soap12:Envelope xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:soap12='http://www.w3.org/2003/05/soap-envelope'>"
+	XML_Zebra = XML_Zebra & "<soap12:Body>"
+	XML_Zebra = XML_Zebra & "<ImprimeZPL xmlns='http://www.aplipack.com.br/'>"
+	XML_Zebra = XML_Zebra & "<UserSoftware>user</UserSoftware>"
+	XML_Zebra = XML_Zebra & "<PasswordSoftware>1234</PasswordSoftware>"
+	XML_Zebra = XML_Zebra & "<EptZPL>" & eptZPL & "</EptZPL>"
+	XML_Zebra = XML_Zebra & "<eptIP>" & eptIP & "</eptIP>"
+	XML_Zebra = XML_Zebra & "<eptPorta>" & eptPorta & "</eptPorta>"
+	XML_Zebra = XML_Zebra & "</ImprimeZPL>"
+	XML_Zebra = XML_Zebra & "</soap12:Body>"
+	XML_Zebra = XML_Zebra & "</soap12:Envelope>"
+
+	Try
+		JobZebra.Initialize("JOBSOAP", Me)
+		JobZebra.PostString(URL, XML_Zebra)
+		JobZebra.GetRequest.SetContentType("text/xml")
+		WaiT For (JobZebra) JobDone
+		Sleep(100)
+
+		XMLWork = JobZebra.GetString
+		XMLWork = XMLWork.Replace("&lt;","<")
+		XMLWork = XMLWork.Replace("&gt;",">")
+		
+		xxStringa = XMLWork.SubString2(XMLWork.IndexOf("<xCodigo>")+9,XMLWork.IndexOf("</xCodigo>"))
+		'xErro = XMLWork.SubString2(XMLWork.IndexOf("<xMsg>")+6,XMLWork.IndexOf("</xMsg>"))
+
+		If xxStringa.Trim() = "" Then
+			'Encio da etiqueta OK
+			ToastMessageShow("Etiqueta enviada para impressão.",True)
+		Else
+			ToastMessageShow("ERRO ao tentar imprimir a etiqueta. Verifique.",True)
+		End If
+	Catch
+		Log(LastException)
+	End Try
+	
+	'LblMSG.Text = xErro
+End Sub
+

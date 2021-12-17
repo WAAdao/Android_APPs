@@ -1,0 +1,3 @@
+Botaão normal: Cor 0,133,194 Radius 45 Borda FFFFFF Radius 3 Texto branco tamanho 33
+Botão Desabilitado: Cor 155,1555,155 45 Borda FFFFFF Radius 3 Texto branco tamanho 33
+Botão pressionado: Cor 0,33, 123  45 Borda FFFFFF Radius 3 Texto branco tamanho 33
